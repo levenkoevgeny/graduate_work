@@ -20,7 +20,10 @@ class Subdivision(models.Model):
     subdivision_name = models.CharField(max_length=255, verbose_name="Наименование подразделения")
     subdivision_short_name = models.CharField(max_length=70, verbose_name="Сокращенное наименование подразделения",
                                               blank=True, null=True)
-    group = models.ForeignKey(Subdivisiongroup, on_delete=models.SET_NULL, null=True)
+    group = models.ForeignKey(Subdivisiongroup, on_delete=models.SET_NULL, null=True, verbose_name="Группа подразделений")
+
+    def __str__(self):
+        return self.subdivision_name
 
     class Meta:
         ordering = ('subdivision_name',)
