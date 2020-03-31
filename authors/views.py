@@ -12,9 +12,19 @@ from django.core.paginator import Paginator
 
 from .forms import AuthorForm
 
+from .filters import AuthorFilter
+
+from .models import Author
+
 
 def author_list(request):
-    pass
+    f = AuthorFilter(request.GET, queryset=Author.objects.all().order_by('lastname'))
+    paginator = Paginator(f.qs, 50)
+    page = request.GET.get('page')
+    authors = paginator.get_page(page)
+    return render(request, 'authors/authors_list.html', {'list': authors,
+                                                         'filter': f,
+                                                         })
 
 
 def author_add(request):
@@ -22,7 +32,7 @@ def author_add(request):
         form = AuthorForm(request.POST)
         if form.is_valid():
             author = form.save()
-            return HttpResponseRedirect(reverse('authors:add'))
+            return HttpResponseRedirect(reverse('authors:list'))
         else:
             return render(request, 'authors/authors_input_form.html', {'form': form})
     else:

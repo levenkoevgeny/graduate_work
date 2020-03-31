@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'authors.apps.AuthorsConfig',
     'index.apps.IndexConfig',
     'widget_tweaks',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
