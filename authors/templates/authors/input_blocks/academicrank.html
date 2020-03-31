@@ -1,0 +1,35 @@
+{% load widget_tweaks %}
+
+<div class="card border-secondary mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Сведения об ученых званиях</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6 border-right">
+                <div class="d-flex flex-row">
+                    {% render_field form.is_docentvak %}<label>Доцент по ВАК</label>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>Присвоено</label>
+                    {% render_field form.docentvak_date class+="form-control" disabled=true %}
+                    <div class="invalid-feedback">
+                        Заполните поле!
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex flex-row">
+                    {% render_field form.is_professor %}<label>Профессор</label>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label>Присвоено</label>
+                    {% render_field form.professor_date class+="form-control" disabled=true %}
+                    <div class="invalid-feedback">
+                        Заполните поле!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

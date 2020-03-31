@@ -1,4 +1,5 @@
 from django.db import models
+from .validators import *
 
 
 class Subdivisiongroup(models.Model):
@@ -93,12 +94,12 @@ class Workstatus(models.Model):
 
 class Author(models.Model):
     subdivision = models.ForeignKey(Subdivision, on_delete=models.SET_NULL, null=True, verbose_name="Подразделение")
-    lastname = models.CharField(max_length=100, verbose_name="Фамилия")
-    firstname = models.CharField(max_length=100, verbose_name="Имя")
-    patronymic = models.CharField(max_length=100, verbose_name="Отчество")
+    lastname = models.CharField(max_length=100, verbose_name="Фамилия", validators=[name_validator])
+    firstname = models.CharField(max_length=100, verbose_name="Имя", validators=[name_validator])
+    patronymic = models.CharField(max_length=100, verbose_name="Отчество", validators=[name_validator])
     date_of_birth = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
-    rank = models.ForeignKey(Rank, on_delete=models.SET_NULL, null=True, verbose_name="Звание")
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, verbose_name="Должность")
+    rank = models.ForeignKey(Rank, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Звание")
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Должность")
     position_date = models.DateField(blank=True, null=True, verbose_name="Дата назначения на должность")
     is_docentvak = models.BooleanField(default=False, verbose_name="Является доцентом ВАК")
     docentvak_date = models.DateField(blank=True, null=True, verbose_name="Дата присовения доцента ВАК")
@@ -107,14 +108,16 @@ class Author(models.Model):
     is_candidate = models.BooleanField(default=False, verbose_name="Является кандидатом наук")
     candidate_date = models.DateField(blank=True, null=True, verbose_name="Дата присвоения кандидата наук")
     candidate_title = models.TextField(blank=True, null=True, verbose_name="Название кандидатской диссертации")
-    candidate_specialty = models.ForeignKey(Candidatespecialty, on_delete=models.SET_NULL, blank=True, null=True, verbose_name="Кандидатская специальность")
+    candidate_specialty = models.ForeignKey(Candidatespecialty, on_delete=models.SET_NULL, blank=True, null=True,
+                                            verbose_name="Кандидатская специальность")
     is_doctor = models.BooleanField(default=False, verbose_name="Является доктором наук")
     doctor_date = models.DateField(blank=True, null=True, verbose_name="Дата присвоения доктора наук")
     doctor_title = models.TextField(blank=True, null=True, verbose_name="Название докторской диссертации")
     doctor_specialty = models.ForeignKey(Doctorspecialty, on_delete=models.SET_NULL, blank=True, null=True,
-                                        verbose_name="Докторская специальность")
+                                         verbose_name="Докторская специальность")
     extra_data = models.TextField(blank=True, null=True, verbose_name="Дополнительные данные")
-    work_status = models.ForeignKey(Workstatus, on_delete=models.SET_NULL, null=True, verbose_name="Рабочий статус")
+    work_status = models.ForeignKey(Workstatus, on_delete=models.SET_NULL, null=True,
+                                    verbose_name="Рабочий статус")
 
     def __str__(self):
         return self.lastname + ' ' + self.firstname + ' ' + self.patronymic + ' ' + str(self.subdivision)

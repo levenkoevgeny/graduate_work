@@ -1,0 +1,10 @@
+{% load widget_tweaks %}
+
+<div class="card border-secondary mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Дополнительная информация</div>
+    <div class="card-body text-secondary">
+        <div class="form-group">
+            {% render_field form.candidate_title class+="form-control" rows="2" %}
+        </div>
+    </div>
+</div>

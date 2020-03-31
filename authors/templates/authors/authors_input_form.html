@@ -7,7 +7,45 @@
 
 {% block content %}
 
-    Content
+    {% for error in form.non_field_errors %}
+        <b>{{ error }}</b><br>
+    {% endfor %}
 
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <b>{{ field.label }} {{ error }}</b><br>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    {% block form_title %}
+        <form class="needs-validation" action="{% url 'authors:add' %}" method="post" novalidate>
+    {% endblock %}
+
+{% csrf_token %}
+<div class="row">
+    <div class="col-lg-6">
+        {% include "./input_blocks/personal_information.html" %}
+    </div>
+    <div class="col-lg-6">
+        {% include "./input_blocks/service.html" %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12">
+        {% include "./input_blocks/academicrank.html" %}
+        {% include "./input_blocks/extradata.html" %}
+    </div>
+</div>
+
+{% include "./input_blocks/activity.html" %}
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Добавить!</button>
+{% endblock %}
+
+
+</form>
 
 {% endblock %}
