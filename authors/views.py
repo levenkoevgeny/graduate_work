@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 
 from django.http import HttpResponseRedirect
@@ -15,6 +14,8 @@ from .forms import AuthorForm
 from .filters import AuthorFilter
 
 from .models import Author
+
+from django.shortcuts import get_object_or_404
 
 
 def author_list(request):
@@ -40,11 +41,25 @@ def author_add(request):
         return render(request, 'authors/authors_input_form.html', {'form': form})
 
 
-
-class AuthorUpdate(UpdateView):
-    pass
+def author_update(request, author_id):
+    if request.method == 'POST':
+        obj = get_object_or_404(Author, pk=author_id)
+        form = AuthorForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('authors:list'))
+        else:
+            return render(request, 'authors/author_update_form.html', {'form': form,
+                                                                       'obj': obj,
+                                                                       })
+    else:
+        obj = get_object_or_404(Author, pk=author_id)
+        form = AuthorForm(instance=obj)
+        return render(request, 'authors/author_update_form.html', {'form': form,
+                                                                   'obj': obj,
+                                                                   })
 
 
 class AuthorDelete(DeleteView):
-    pass
-
+    model = Author
+    success_url = reverse_lazy('authors:list')

@@ -127,6 +127,22 @@ class Author(models.Model):
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
 
+    @property
+    def get_full_name(self):
+        return "{} {}.{}".format(self.lastname, self.firstname[0], self.patronymic[0])
 
+    @property
+    def get_is_docent_vak(self):
+        return "{}".format("Да" if self.is_docentvak else "Нет")
 
+    @property
+    def get_is_professor(self):
+        return "{}".format("Да" if self.is_professor else "Нет")
 
+    @property
+    def get_is_candidate(self):
+        return "{}".format("Да" if self.is_candidate else "Нет")
+
+    @property
+    def get_is_doctor(self):
+        return "{}".format("Да" if self.is_doctor else "Нет")

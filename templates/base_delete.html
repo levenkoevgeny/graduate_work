@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Удаление{% endblock %}
+
+{% block side_panel %}{% endblock %}
+{% block content %}
+    <div class="container">
+        <br>
+        <form method="post">{% csrf_token %}
+            <p>Вы действительно хотите удалить "{{ object }}"?</p>
+            <button type="submit" class="btn btn-danger" value="Confirm">Удалить!</button>
+            <a href="{% block redirect_url %}{% endblock %}" class="btn btn-info">Отмена!</a>
+        </form>
+    </div>
+{% endblock %}
