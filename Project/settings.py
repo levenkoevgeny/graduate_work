@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authors.apps.AuthorsConfig',
     'index.apps.IndexConfig',
+    'sciencework.apps.ScienceworkConfig',
     'widget_tweaks',
     'django_filters',
 ]

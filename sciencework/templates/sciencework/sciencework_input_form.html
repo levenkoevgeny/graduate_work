@@ -1,0 +1,33 @@
+{% extends "base_input.html" %}
+{% load static %}
+
+{% block title %}Научная работа{% endblock %}
+
+{% block input_form %}
+    {% block form_title %}
+        <form class="needs-validation" action="{% url 'sciencework:add' %}" method="post" novalidate>
+    {% endblock %}
+
+{% csrf_token %}
+
+<div class="card border-dark mb-2" style="max-width: 100%;">
+    <div class="card-header">Сведения о научной работе</div>
+    <div class="card-body">
+        <div class="row">
+            {% include 'sciencework/input_blocks/common_data.html' %}
+            {% include 'sciencework/input_blocks/extra_data.html' %}
+        </div>
+    </div>
+</div>
+
+{% include 'sciencework/input_blocks/authors.html' %}
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Добавить!</button>
+{% endblock %}
+</form>
+
+{% endblock %}
+{% block own_js %}
+    <script src="{% static 'sciencework/js/sciencework_main.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+
+
+
+<div class="card border-dark mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header" id="withselect">Авторский коллектив</div>
+    <div class="card-body" id="cardbodyforlistauthors">
+        <div class="row">
+            <div class="col-sm-6 d-flex flex-row">
+                <div class="d-flex flex-row align-items-center">
+                    {% render_field form.work_is_foreignauthors type="checkbox" %}<label>Сторонние авторы</label>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="d-flex flex-row align-items-center">
+                    <label>Количество</label>&nbsp;
+                    <input type="number" disabled class="form-control" name="sciencework_foreign_authorscount" id="sciencework_foreign_authorscount" style="width: 80px;" min="1" required>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12">
+                {% render_field form.authors|add_required_class:"is-required" class+="form-control select2_class" %}
+            </div>
+        </div>
+    </div>
+</div>
