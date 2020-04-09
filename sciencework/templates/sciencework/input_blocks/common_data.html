@@ -13,7 +13,7 @@
         <div class="col-lg-4">
             <div class="form-group">
                 <label>Год издания</label>
-                {% render_field form.year|attr:"required" class+="form-control" min="1900" max="2020" value="2020" %}
+                {% render_field form.year class+="form-control" min="1900" max="2020" value="2020" %}
                 <div class="invalid-feedback">
                     Заполните поле!
                 </div>

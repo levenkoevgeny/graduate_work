@@ -1,0 +1,55 @@
+{% extends "base_list.html" %}
+
+{% load url_replace %}
+{% load static %}
+
+{% block title %}Научные работы{% endblock %}
+
+{% block add_button %}
+    <a href="{% url 'sciencework:add' %}" class="btn btn-light"><i class="fas fa-plus-circle"></i> Добавить научную работу</a>
+{% endblock %}
+
+{% block filters %}
+    {% include "sciencework/filters.html" %}
+{% endblock %}
+
+{% block list %}
+    <table class="table table-sm">
+        <thead class="table-active">
+        <tr>
+            <th scope="col" class="sorting" id='id'>Id</th>
+            <th scope="col" class="sorting" id='kind'>Вид</th>
+            <th scope="col" class="sorting" id='year'>Год</th>
+            <th scope="col">Количество листов</th>
+            <th scope="col">Выходные данные</th>
+            <th scope="col">Авторы</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for sw in list %}
+            <tr>
+                <th scope="row">{{ sw.id }}</th>
+                <th scope="row">{{ sw.kind }}</th>
+                <th scope="row">{{ sw.year }}</th>
+                <th scope="row">{{ sw.sheet_count }}</th>
+                <th scope="row">{{ sw.output_data }}</th>
+                <th scope="row">
+                    {% for author in sw.authors.all %}
+                        {{ author.get_full_name }}<br>
+                    {% endfor %}
+                </th>
+                <td><a href="{% url 'sciencework:update' sw.id %}" class="btn btn-light"><i class="fas fa-users-cog"></i></a></td>
+                <td><a href="{% url 'sciencework:delete' sw.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block own_js %}
+    <script src="{% static 'sciencework/js/sciencework_main.js' %}"></script>
+{% endblock %}
+

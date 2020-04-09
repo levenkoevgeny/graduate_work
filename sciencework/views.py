@@ -11,22 +11,26 @@ from django.core.paginator import Paginator
 
 from .models import Sciencework
 
+from .filters import ScienceWorkFilter
+
 from .forms import ScienceworkForm
 
 from django.shortcuts import get_object_or_404
 
+from django.db import transaction
+
 
 def sciencework_list(request):
-    pass
-    # f = AuthorFilter(request.GET, queryset=Author.objects.all().order_by('lastname'))
-    # paginator = Paginator(f.qs, 50)
-    # page = request.GET.get('page')
-    # authors = paginator.get_page(page)
-    # return render(request, 'authors/authors_list.html', {'list': authors,
-    #                                                      'filter': f,
-    #                                                      })
+    f = ScienceWorkFilter(request.GET, queryset=Sciencework.objects.all().order_by('-pk'))
+    paginator = Paginator(f.qs, 50)
+    page = request.GET.get('page')
+    scinceworks = paginator.get_page(page)
+    return render(request, 'sciencework/sciencework_list.html', {'list': scinceworks,
+                                                                 'filter': f,
+                                                                 })
 
 
+@transaction.atomic
 def sciencework_add(request):
     if request.method == 'POST':
         form = ScienceworkForm(request.POST)
@@ -34,46 +38,54 @@ def sciencework_add(request):
             sciencework = form.save()
             for author in sciencework.authors.all():
                 sciencework.subdivisions.add(author.subdivision)
-
+            if sciencework.magazine is None and sciencework.digest is not None:
+                sciencework.in_vak = sciencework.digest.in_vak
+                for international in sciencework.digest.in_international.all():
+                    sciencework.in_internationals.add(international)
+            if sciencework.digest is None and sciencework.magazine is not None:
+                sciencework.in_vak = sciencework.magazine.in_vak
+                for international in sciencework.magazine.in_international.all():
+                    sciencework.in_internationals.add(international)
+            foreign_authors_count = request.POST.get('sciencework_foreign_authorscount', 0)
+            sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
             sciencework.save()
-            return HttpResponseRedirect(reverse('sciencework:add'))
+            return HttpResponseRedirect(reverse('sciencework:list'))
     else:
         form = ScienceworkForm
         return render(request, 'sciencework/sciencework_input_form.html', {'form': form})
 
-    # if request.method == 'POST':
-    #     form = AuthorForm(request.POST)
-    #     if form.is_valid():
-    #         author = form.save()
-    #         return HttpResponseRedirect(reverse('authors:list'))
-    #     else:
-    #         return render(request, 'authors/authors_input_form.html', {'form': form})
-    # else:
-    #     form = AuthorForm
-    #     return render(request, 'authors/authors_input_form.html', {'form': form})
 
-
-def sciencework_update(request, author_id):
-    pass
-    # if request.method == 'POST':
-    #     obj = get_object_or_404(Author, pk=author_id)
-    #     form = AuthorForm(request.POST, instance=obj)
-    #     if form.is_valid():
-    #         form.save()
-    #         return HttpResponseRedirect(reverse('authors:list'))
-    #     else:
-    #         return render(request, 'authors/author_update_form.html', {'form': form,
-    #                                                                    'obj': obj,
-    #                                                                    })
-    # else:
-    #     obj = get_object_or_404(Author, pk=author_id)
-    #     form = AuthorForm(instance=obj)
-    #     return render(request, 'authors/author_update_form.html', {'form': form,
-    #                                                                'obj': obj,
-    #                                                                })
+@transaction.atomic
+def sciencework_update(request, sciencework_id):
+    if request.method == 'POST':
+        obj = get_object_or_404(Sciencework, pk=sciencework_id)
+        form = ScienceworkForm(request.POST, instance=obj)
+        if form.is_valid():
+            sciencework = form.save()
+            sciencework.in_internationals.clear()
+            sciencework.subdivisions.clear()
+            for author in sciencework.authors.all():
+                sciencework.subdivisions.add(author.subdivision)
+            if sciencework.magazine is None and sciencework.digest is not None:
+                sciencework.in_vak = sciencework.digest.in_vak
+                for international in sciencework.digest.in_international.all():
+                    sciencework.in_internationals.add(international)
+            if sciencework.digest is None and sciencework.magazine is not None:
+                sciencework.in_vak = sciencework.magazine.in_vak
+                for international in sciencework.magazine.in_international.all():
+                    sciencework.in_internationals.add(international)
+            foreign_authors_count = request.POST.get('sciencework_foreign_authorscount', 0)
+            sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
+            sciencework.save()
+            return HttpResponseRedirect(reverse('sciencework:list'))
+    else:
+        obj = get_object_or_404(Sciencework, pk=sciencework_id)
+        form = ScienceworkForm(instance=obj)
+        return render(request, 'sciencework/sciencework_update_form.html', {'form': form,
+                                                                            'obj': obj,
+                                                                            })
 
 
 class ScienceworkDelete(DeleteView):
-    pass
-    # model = Author
-    # success_url = reverse_lazy('authors:list')
+    model = Sciencework
+    success_url = reverse_lazy('sciencework:list')

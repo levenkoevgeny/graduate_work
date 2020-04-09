@@ -1,0 +1,16 @@
+{% extends "sciencework/sciencework_input_form.html" %}
+
+{% load static %}
+
+{% block form_title %}
+    <form class="needs-validation" action="{% url 'sciencework:update' sciencework_id=obj.id %}" method="post" novalidate>
+{% endblock %}
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Сохранить!</button>
+{% endblock %}
+
+{% block own_js %}
+    <script src="{% static 'sciencework/js/sciencework_main.js' %}"></script>
+    <script src="{% static 'sciencework/js/sciencework_update.js' %}"></script>
+{% endblock %}
