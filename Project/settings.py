@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'authors.apps.AuthorsConfig',
     'index.apps.IndexConfig',
     'sciencework.apps.ScienceworkConfig',
+    'dissertationresearch.apps.DissertationresearchConfig',
+    'nir.apps.NirConfig',
     'widget_tweaks',
     'django_filters',
 ]

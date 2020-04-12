@@ -46,7 +46,7 @@ function init_fields(id){
 $(document).ready(function() {
     'use strict'
 
-    $('.select2_class').select2();
+    $('#id_authors').select2();
 
     init_page();
 

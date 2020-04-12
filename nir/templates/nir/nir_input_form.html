@@ -1,0 +1,97 @@
+{% extends "base_input.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Научно-исследовательская работа{% endblock %}
+
+{% block input_form %}
+    {% block form_title %}
+        <form class="needs-validation" action="{% url 'nir:add' %}" method="post" novalidate>
+    {% endblock %}
+
+{% csrf_token %}
+
+
+        <div class="card border-secondary mb-2" style="max-width: 100%; line-height: 0.6;">
+            <div class="card-header">Данные научно-исследовательской работы</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Наименование научно-исследовательской работы</label>
+                            {% render_field form.nir_title class+="form-control" rows="2" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Дата начала</label>
+                            {% render_field form.start_date class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Дата окончания</label>
+                            {% render_field form.end_date class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Дата утверждения отчета</label>
+                            {% render_field form.approve_date class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Основания для проведения НИР</label>
+                            {% render_field form.reason class+="form-control select2_class" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Пункт плана НИД Академии МВД</label>
+                            {% render_field form.plan_item class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Результаты исследования</label>
+                            {% render_field form.result class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="card border-dark mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Автор и руководитель НИР</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Автор НИР</label>
+                    {% render_field form.authors class+="form-control select2_class" %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Руководитель НИР</label>
+                    {% render_field form.nir_leader class+="form-control select2_class" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Добавить!</button>
+{% endblock %}
+</form>
+
+{% endblock %}
+{% block own_js %}
+        <script src="{% static 'nir/js/nir_main.js' %}"></script>
+{% endblock %}

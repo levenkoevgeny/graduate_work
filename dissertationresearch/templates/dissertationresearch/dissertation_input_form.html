@@ -1,0 +1,118 @@
+{% extends "base_input.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Диссертационное исследование{% endblock %}
+
+{% block input_form %}
+    {% block form_title %}
+        <form class="needs-validation" action="{% url 'dissertation:add' %}" method="post" novalidate>
+    {% endblock %}
+
+{% csrf_token %}
+
+
+<div class="card border-secondary mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Данные диссертационного исследования</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Вид</label>
+                    {% render_field form.kind class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Основание проведения</label>
+                    {% render_field form.reason class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Результат исследования</label>
+                    {% render_field form.result class+="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Тема</label>&nbsp;
+                    {% render_field form.dissertation_theme class+="form-control" rows="2" %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Год начала</label>
+                    {% render_field form.date_begin class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Год окончания</label>
+                    {% render_field form.date_end class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Дата защиты</label>
+                    {% render_field form.date_protect class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Статус исследователя</label>
+                    {% render_field form.status class+="form-control" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card border-dark mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header" id="withselect">Автор исследования и руководитель исследования</div>
+    <div class="card-body" id="cardbodyforlistauthors">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Автор исследования</label>
+                    {% render_field form.author class+="form-control select2_class" %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Руководитель исследования</label>
+                    {% render_field form.leader class+="form-control select2_class" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-dark mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header" id="withselect">Место проведения исследования</div>
+    <div class="card-body" id="cardbodyforlistauthors">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {% render_field form.research_place class+="form-control select2_class" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Добавить!</button>
+{% endblock %}
+</form>
+
+{% endblock %}
+{% block own_js %}
+    {#    <script src="{% static 'sciencework/js/sciencework_main.js' %}"></script>#}
+{% endblock %}

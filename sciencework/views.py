@@ -50,6 +50,9 @@ def sciencework_add(request):
             sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
             sciencework.save()
             return HttpResponseRedirect(reverse('sciencework:list'))
+        else:
+            return render(request, 'sciencework/sciencework_input_form.html', {'form': form})
+
     else:
         form = ScienceworkForm
         return render(request, 'sciencework/sciencework_input_form.html', {'form': form})
@@ -78,6 +81,8 @@ def sciencework_update(request, sciencework_id):
             sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
             sciencework.save()
             return HttpResponseRedirect(reverse('sciencework:list'))
+        else:
+            return render(request, 'sciencework/sciencework_input_form.html', {'form': form})
     else:
         obj = get_object_or_404(Sciencework, pk=sciencework_id)
         form = ScienceworkForm(instance=obj)

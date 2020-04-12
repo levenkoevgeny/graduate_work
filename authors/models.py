@@ -129,7 +129,7 @@ class Author(models.Model):
 
     @property
     def get_full_name(self):
-        return "{} {}.{}".format(self.lastname, self.firstname[0], self.patronymic[0])
+        return "{} {}.{}.".format(self.lastname, self.firstname[0], self.patronymic[0])
 
     @property
     def get_is_docent_vak(self):
