@@ -4,11 +4,11 @@
 {% load url_replace %}
 
 {% block nav %}
-    {#    {% include "index/common/navs/nav.html" %}#}
+        {% include "index/common/navs/nav.html" %}
 {% endblock %}
 
 {% block side_panel %}
-    {#    {% include "index/common/navs/sidepanel.html"%}#}
+        {% include "index/common/navs/side_panel_main.html"%}
 {% endblock %}
 
 {% block content %}
@@ -57,6 +57,7 @@
         {% endif %}
     </div>
 {% endblock %}
+
 {% block js %}
     {% block own_js %}{% endblock %}
     {#    <script src="{% static 'index/js/filter.js' %}"></script>#}

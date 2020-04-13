@@ -1,0 +1,16 @@
+#navigate {
+    padding: 0;
+    margin-left: 0px;
+}
+
+#navigate li {
+    list-style-type: none;
+}
+
+#navigate li:hover i{
+    color: black;!important;
+}
+
+#navigate i{
+    color: gray;!important;
+}

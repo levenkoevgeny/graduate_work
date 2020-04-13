@@ -3,30 +3,31 @@
 {% load static %}
 
 {% block nav %}
-    {#    {% include "index/common/navs/nav.html" %}#}
+    {% include "index/common/navs/nav.html" %}
 {% endblock %}
+
 
 {% block side_panel %}
-    {#    {% include "index/common/navs/sidepanel.html"%}#}
+    {% include "index/common/navs/side_panel_main.html"%}
 {% endblock %}
-
-
 
 {% block content %}
-    {% for error in form.non_field_errors %}
-        <b>{{ field.label }} {{ error }}</b><br>
-    {% endfor %}
+    <div class="col-md-10">
+    <br>
+        {% for error in form.non_field_errors %}
+            <b>{{ field.label }} {{ error }}</b><br>
+        {% endfor %}
 
-    {% for field in form %}
-        {% if field.errors %}
-            {% for error in field.errors %}
-                <b>{{ field.label }} {{ error }}</b><br>
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    {% block input_form %}{% endblock %}
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <b>{{ field.label }} {{ error }}</b><br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% block input_form %}{% endblock %}
+    </div>
 {% endblock %}
-
 
 {% block js %}
     <script src="{% static 'index/js/check_form.js' %}"></script>
