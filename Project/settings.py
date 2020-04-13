@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'sciencework.apps.ScienceworkConfig',
     'dissertationresearch.apps.DissertationresearchConfig',
     'nir.apps.NirConfig',
+    'anr.apps.AnrConfig',
     'widget_tweaks',
     'django_filters',
 ]

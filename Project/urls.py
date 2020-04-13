@@ -22,6 +22,7 @@ urlpatterns = [
     path('sciencework/', include('sciencework.urls')),
     path('dissertation/', include('dissertationresearch.urls')),
     path('nir/', include('nir.urls')),
+    path('anr/', include('anr.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

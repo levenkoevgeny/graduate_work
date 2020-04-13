@@ -1,0 +1,109 @@
+{% extends "base_input.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Апробация научных результатов{% endblock %}
+
+{% block input_form %}
+    {% block form_title %}
+        <form class="needs-validation" action="{% url 'anr:add' %}" method="post" novalidate>
+    {% endblock %}
+
+{% csrf_token %}
+
+<div class="card border-secondary mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Данные апробации</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label>Вид внедренной разработки</label>
+                    {% render_field form.development_kind class+="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div id="sciencework_div">
+                    <div class="form-group">
+                        {% render_field form.sciencework class+="form-control select2_class" %}
+                    </div>
+                </div>
+                <div id="nir_div">
+                    <div class="form-group">
+                        {% render_field form.nir class+="form-control select2_class" %}
+                    </div>
+                </div>
+                <div id="dissertation_div">
+                    <div class="form-group">
+                        {% render_field form.dissertation class+="form-control select2_class" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-6">
+                <label>Вид внедрения</label>
+                {% render_field form.introduction_kind class+="form-control" %}
+            </div>
+            <div class="col-xl-6">
+                <div class="form-group">
+                    <label>Организация внедрения</label>
+                    {% render_field form.introduction_organization class+="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4">
+                <label>Год внедрения</label>
+                {% render_field form.year class+="form-control" %}
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label>Полугодие внедрения</label>
+                    {% render_field form.half_year class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-group">
+                    <label>Дата утверждения акта о внедрении</label>
+                    {% render_field form.approve_date class+="form-control" %}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-check">
+                {% render_field form.is_student_participation class+="form-check-input" %}
+                <label class="form-check-label">
+                    Участие обучающихся
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card border-dark mb-2" style="max-width: 100%; line-height: 0.6;">
+    <div class="card-header">Авторы</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    {% render_field form.authors class+="form-control select2_class" %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block button %}
+    <button type="submit" class="btn btn-primary">Добавить!</button>
+{% endblock %}
+</form>
+
+{% endblock %}
+{% block own_js %}
+    <script src="{% static 'anr/js/anr_main.js' %}"></script>
+{% endblock %}
