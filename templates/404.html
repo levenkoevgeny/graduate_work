@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-!!!!!!
-</body>
-</html>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}404 Not found{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <br>
+        <div class="jumbotron">
+            <h1 class="display-4">404</h1>
+            <p class="lead">Страница на которую Вы пытаетесь перейти не существует.</p>
+            <hr class="my-4">
+            <p><a href="{% url 'index:index' %}">Вернуться на главную страницу приложения</a></p>
+        </div>
+    </div>
+{% endblock %}
