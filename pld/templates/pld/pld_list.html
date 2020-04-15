@@ -1,0 +1,54 @@
+{% extends "base_list.html" %}
+
+{% load url_replace %}
+{% load static %}
+
+{% block title %}Апробации научных результатов{% endblock %}
+
+{% block add_button %}
+    <a href="{% url 'pld:add' %}" class="btn btn-light"><i class="fas fa-plus-circle"></i> Добавить Патентно-лицензионную деятельность</a>
+{% endblock %}
+
+{% block filters %}
+    {% include "pld/filters.html" %}
+{% endblock %}
+
+{% block list %}
+    <table class="table table-sm">
+        <thead class="table-active">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Вид</th>
+            <th scope="col">Название</th>
+            <th scope="col">Дата начала</th>
+            <th scope="col">Дата регистрации</th>
+            <th scope="col">Номер патента</th>
+            <th scope="col">Автор</th>
+            <th scope="col">Патентообладатель</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for pld in list %}
+            <tr>
+                <td>{{ pld.id }}</td>
+                <td>{{ pld.kind }}</td>
+                <td>{{ pld.pld_title }}</td>
+                <td>{{ pld.action_start|default_if_none:"Нет данных" }}</td>
+                <td>{{ pld.registration_date|default_if_none:"Нет данных" }}</td>
+                <td>{{ pld.panent_number }}</td>
+                <td>{{ pld.get_authors }}</td>
+                <td>{{ pld.get_pld_owners }}</td>
+                <td><a href="{% url 'pld:update' pld.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
+                <td><a href="{% url 'pld:delete' pld.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block own_js %}
+    <script src="{% static 'pld/js/pld_main.js' %}"></script>
+{% endblock %}
+
