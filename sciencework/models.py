@@ -1,6 +1,6 @@
 from django.db import models
 from authors.models import Author, Subdivision
-from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Publicationkind(models.Model):
@@ -217,6 +217,9 @@ class Sciencework(models.Model):
                                    verbose_name="Подвид учебного издания")
     org_founder = models.ForeignKey(Orgfounder, on_delete=models.SET_NULL, blank=True, null=True,
                                     verbose_name="Организация учредитель сборника")
+    date_added = models.DateTimeField(blank=True, null=True, verbose_name="Дата и время моследнего изменения")
+    user_added = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   verbose_name="Кем внесено/изменено")
 
     class Meta:
         ordering = ('kind',)

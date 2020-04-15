@@ -17,6 +17,8 @@ from django.core.paginator import Paginator
 
 from django.db import transaction
 
+import datetime
+
 
 def anr_list(request):
     f = ANRFilter(request.GET, queryset=ANR.objects.all().order_by('-pk'))
@@ -36,6 +38,8 @@ def anr_add(request):
             anr = form.save()
             for author in anr.authors.all():
                 anr.subdivisions.add(author.subdivision)
+            anr.date_added = datetime.datetime.now()
+            anr.user_added = request.user
             anr.save()
             return HttpResponseRedirect(reverse('anr:list'))
         else:
@@ -55,6 +59,8 @@ def anr_update(request, anr_id):
             anr.subdivisions.clear()
             for author in anr.authors.all():
                 anr.subdivisions.add(author.subdivision)
+            anr.date_added = datetime.datetime.now()
+            anr.user_added = request.user
             anr.save()
             return HttpResponseRedirect(reverse('anr:list'))
         else:

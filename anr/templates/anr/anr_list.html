@@ -40,7 +40,7 @@
                 <td>{{ anr.approve_date }}</td>
                 <td>{{ anr.get_authors }}</td>
                 <td>{{ anr.get_subdivisions }}</td>
-                <td><a href="{% url 'anr:update' anr.id %}" class="btn btn-light"><i class="fas fa-users-cog"></i></a></td>
+                <td><a href="{% url 'anr:update' anr.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
                 <td><a href="{% url 'anr:delete' anr.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
         {% endfor %}

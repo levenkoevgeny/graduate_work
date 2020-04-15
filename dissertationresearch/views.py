@@ -17,6 +17,8 @@ from django.core.paginator import Paginator
 
 from django.db import transaction
 
+import datetime
+
 
 def dissertation_research_list(request):
     f = DissertationResearchFilter(request.GET, queryset=DissertationResearch.objects.all().order_by('-pk'))
@@ -36,6 +38,8 @@ def dissertation_research_add(request):
             dissertation = form.save()
             dissertation.research_place_subdivision = dissertation.author.subdivision
             dissertation.leader_subdivision = dissertation.leader.subdivision
+            dissertation.date_added = datetime.datetime.now()
+            dissertation.user_added = request.user
             dissertation.save()
             return HttpResponseRedirect(reverse('dissertation:list'))
         else:
@@ -54,6 +58,8 @@ def dissertation_research_update(request, dissertation_research_id):
             dissertation = form.save()
             dissertation.research_place_subdivision = dissertation.author.subdivision
             dissertation.leader_subdivision = dissertation.leader.subdivision
+            dissertation.date_added = datetime.datetime.now()
+            dissertation.user_added = request.user
             dissertation.save()
             return HttpResponseRedirect(reverse('dissertation:list'))
         else:

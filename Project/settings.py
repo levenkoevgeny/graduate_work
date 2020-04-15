@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'dissertationresearch.apps.DissertationresearchConfig',
     'nir.apps.NirConfig',
     'anr.apps.AnrConfig',
+    'pld.apps.PldConfig',
+    'reporting.apps.ReportingConfig',
     'widget_tweaks',
     'django_filters',
 ]

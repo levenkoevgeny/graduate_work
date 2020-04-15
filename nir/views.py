@@ -19,6 +19,8 @@ from django.shortcuts import get_object_or_404
 
 from django.db import transaction
 
+import datetime
+
 
 def nir_list(request):
     f = NIRFilter(request.GET, queryset=NIR.objects.all().order_by('-pk'))
@@ -39,6 +41,8 @@ def nir_add(request):
             for author in nir.authors.all():
                 nir.subdivisions.add(author.subdivision)
             nir.leader_subdivision = nir.nir_leader.subdivision
+            nir.date_added = datetime.datetime.now()
+            nir.user_added = request.user
             nir.save()
             return HttpResponseRedirect(reverse('nir:list'))
         else:
@@ -59,6 +63,8 @@ def nir_update(request, nir_id):
             for author in nir.authors.all():
                 nir.subdivisions.add(author.subdivision)
             nir.leader_subdivision = nir.nir_leader.subdivision
+            nir.date_added = datetime.datetime.now()
+            nir.user_added = request.user
             nir.save()
             return HttpResponseRedirect(reverse('nir:list'))
         else:

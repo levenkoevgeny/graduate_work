@@ -2,6 +2,8 @@ from django.db import models
 
 from authors.models import Author, Subdivision
 
+from django.contrib.auth.models import User
+
 
 class ReasonNIR(models.Model):
     reason_name = models.CharField(max_length=255, verbose_name="Основание для проведения НИР")
@@ -39,9 +41,12 @@ class NIR(models.Model):
     authors = models.ManyToManyField(Author, verbose_name="Авторы НИР")
     subdivisions = models.ManyToManyField(Subdivision, verbose_name="Подразделения НИР")
     nir_leader = models.ForeignKey(Author, related_name="nir_leader", on_delete=models.SET_NULL, null=True, blank=True,
-                               verbose_name="Научный руководитель")
+                                   verbose_name="Научный руководитель")
     leader_subdivision = models.ForeignKey(Subdivision, related_name='nir_leader_subdivision', on_delete=models.SET_NULL, null=True, blank=True,
                                            verbose_name="Подразделение научного руководителя")
+    date_added = models.DateTimeField(blank=True, null=True, verbose_name="Дата и время моследнего изменения")
+    user_added = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   verbose_name="Кем внесено/изменено")
 
     class Meta:
         ordering = ('nir_title',)

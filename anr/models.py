@@ -3,6 +3,7 @@ from authors.models import Author, Subdivision
 from sciencework.models import Sciencework
 from dissertationresearch.models import DissertationResearch
 from nir.models import NIR
+from django.contrib.auth.models import User
 
 
 class DevelopmentKind(models.Model):
@@ -57,6 +58,10 @@ class ANR(models.Model):
     nir = models.ForeignKey(NIR, on_delete=models.CASCADE, verbose_name="Научно-исследовательская работа", blank=True, null=True)
     dissertation = models.ForeignKey(DissertationResearch, on_delete=models.CASCADE, blank=True, null=True,
                                      verbose_name="Диссертационное исследование")
+    date_added = models.DateTimeField(blank=True, null=True, verbose_name="Дата и время моследнего изменения")
+    user_added = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   verbose_name="Кем внесено/изменено")
+
 
     def __str__(self):
         return self.development_kind.kind_title

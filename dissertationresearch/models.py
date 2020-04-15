@@ -1,5 +1,6 @@
 from django.db import models
 from authors.models import Author,Subdivision
+from django.contrib.auth.models import User
 
 
 class ResearchKind(models.Model):
@@ -67,6 +68,9 @@ class DissertationResearch(models.Model):
                                        verbose_name="Место проведения исследования")
     research_place_subdivision = models.ForeignKey(Subdivision, on_delete=models.SET_NULL, related_name="research_place_subdivision", null=True, blank=True,
                                                    verbose_name="Подразделение Академии МВД РБ (место проведения)")
+    date_added = models.DateTimeField(blank=True, null=True, verbose_name="Дата и время моследнего изменения")
+    user_added = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
+                                   verbose_name="Кем внесено/изменено")
 
     class Meta:
         ordering = ('id',)
