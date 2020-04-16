@@ -24,7 +24,7 @@
                     <a class="nav-link"><i class="fas fa-user"></i> Вы вошли в систему как {{ user.last_name }} {{ user.first_name }}!</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=""> Выход</a>
+                    <a class="nav-link" href="{% url 'logout' %}"> Выход из системы</a>
                 </li>
             {% else %}
                 <li class="nav-item">
