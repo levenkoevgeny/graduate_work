@@ -146,3 +146,4 @@ class Author(models.Model):
     @property
     def get_is_doctor(self):
         return "{}".format("Да" if self.is_doctor else "Нет")
+

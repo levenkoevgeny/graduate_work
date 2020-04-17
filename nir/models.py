@@ -4,6 +4,11 @@ from authors.models import Author, Subdivision
 
 from django.contrib.auth.models import User
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from dashboard.models import DashBoard
+
 
 class ReasonNIR(models.Model):
     reason_name = models.CharField(max_length=255, verbose_name="Основание для проведения НИР")
@@ -79,3 +84,14 @@ class NIR(models.Model):
             s += subdivision.subdivision_name
             s += ' '
         return s
+
+
+@receiver(post_save, sender=NIR)
+def activity_handler(sender, instance, **kwargs):
+    obj = NIR.objects.filter(pk=instance.id)[0]
+    if obj.date_added is not None and obj.user_added is not None:
+        dash_board = DashBoard(user=obj.user_added,
+                               activity_date=obj.date_added,
+                               activity_class=obj.__class__.__name__
+                               )
+        dash_board.save()

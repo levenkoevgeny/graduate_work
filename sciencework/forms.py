@@ -12,17 +12,8 @@ class ScienceworkForm(ModelForm):
 
         model = Sciencework
 
-        exclude = ['in_vak', 'in_internationals', 'author_count', 'subdivisions', 'org_founder']
+        exclude = ['in_vak', 'in_internationals', 'subdivisions', 'org_founder']
         widgets = {'sciencework_student_participation': CheckboxInput(),
                    'work_is_foreignauthors': CheckboxInput(),
                    'half_year': Select(choices=CHOICES),
                    }
-
-
-# class ConferenceForm(ModelForm):
-#
-#     class Meta:
-#         model = Conference
-#         fields = '__all__'
-#         widgets = {'forumdate': myDateInput,
-#                    }

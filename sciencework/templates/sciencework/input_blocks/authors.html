@@ -8,11 +8,11 @@
         <div class="row">
             <div class="col-sm-6 d-flex flex-row">
                 <div class="d-flex flex-row align-items-center">
-                    {% render_field form.work_is_foreignauthors type="checkbox" %}<label>Сторонние авторы</label>
+                    {% render_field form.work_is_foreignauthors %}<label>Сторонние авторы</label>
                 </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="d-flex flex-row align-items-center">
                     <label>Количество</label>&nbsp;
-                    <input type="number" disabled class="form-control" name="sciencework_foreign_authorscount" id="sciencework_foreign_authorscount" style="width: 80px;" min="1" required>
+                    {% render_field form.other_author_count class+="form-control" %}
                 </div>
             </div>
         </div>

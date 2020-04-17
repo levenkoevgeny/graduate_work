@@ -4,6 +4,9 @@ from sciencework.models import Sciencework
 from dissertationresearch.models import DissertationResearch
 from nir.models import NIR
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from dashboard.models import DashBoard
 
 
 class DevelopmentKind(models.Model):
@@ -97,3 +100,14 @@ class ANR(models.Model):
             result += subdivision.subdivision_name
             result += ' '
         return result
+
+
+@receiver(post_save, sender=ANR)
+def activity_handler(sender, instance, **kwargs):
+    obj = ANR.objects.filter(pk=instance.id)[0]
+    if obj.date_added is not None and obj.user_added is not None:
+        dash_board = DashBoard(user=obj.user_added,
+                               activity_date=obj.date_added,
+                               activity_class=obj.__class__.__name__
+                               )
+        dash_board.save()

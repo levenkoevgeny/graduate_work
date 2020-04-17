@@ -1,6 +1,9 @@
 from django.db import models
 from authors.models import Author,Subdivision
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
+from dashboard.models import DashBoard
 
 
 class ResearchKind(models.Model):
@@ -79,3 +82,14 @@ class DissertationResearch(models.Model):
 
     def __str__(self):
         return self.dissertation_theme
+
+
+@receiver(post_save, sender=DissertationResearch)
+def activity_handler(sender, instance, **kwargs):
+    obj = DissertationResearch.objects.filter(pk=instance.id)[0]
+    dash_board = DashBoard(user=obj.user_added,
+                           activity_date=obj.date_added,
+                           activity_class=obj.__class__.__name__
+                           )
+    dash_board.save()
+

@@ -48,8 +48,6 @@ def sciencework_add(request):
                 sciencework.in_vak = sciencework.magazine.in_vak
                 for international in sciencework.magazine.in_international.all():
                     sciencework.in_internationals.add(international)
-            foreign_authors_count = request.POST.get('sciencework_foreign_authorscount', 0)
-            sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
             sciencework.date_added = datetime.datetime.now()
             sciencework.user_added = request.user
             sciencework.save()
@@ -81,8 +79,6 @@ def sciencework_update(request, sciencework_id):
                 sciencework.in_vak = sciencework.magazine.in_vak
                 for international in sciencework.magazine.in_international.all():
                     sciencework.in_internationals.add(international)
-            foreign_authors_count = request.POST.get('sciencework_foreign_authorscount', 0)
-            sciencework.author_count = sciencework.authors.all().count() + int(foreign_authors_count)
             sciencework.date_added = datetime.datetime.now()
             sciencework.user_added = request.user
             sciencework.save()

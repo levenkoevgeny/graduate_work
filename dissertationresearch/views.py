@@ -35,7 +35,7 @@ def dissertation_research_add(request):
     if request.method == 'POST':
         form = DissertationResearchForm(request.POST)
         if form.is_valid():
-            dissertation = form.save()
+            dissertation = form.save(commit=False)
             dissertation.research_place_subdivision = dissertation.author.subdivision
             dissertation.leader_subdivision = dissertation.leader.subdivision
             dissertation.date_added = datetime.datetime.now()
@@ -55,7 +55,7 @@ def dissertation_research_update(request, dissertation_research_id):
         obj = get_object_or_404(DissertationResearch, pk=dissertation_research_id)
         form = DissertationResearchForm(request.POST, instance=obj)
         if form.is_valid():
-            dissertation = form.save()
+            dissertation = form.save(commit=False)
             dissertation.research_place_subdivision = dissertation.author.subdivision
             dissertation.leader_subdivision = dissertation.leader.subdivision
             dissertation.date_added = datetime.datetime.now()

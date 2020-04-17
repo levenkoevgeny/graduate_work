@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'anr.apps.AnrConfig',
     'pld.apps.PldConfig',
     'reporting.apps.ReportingConfig',
+    'dashboard.apps.DashboardConfig',
     'widget_tweaks',
     'django_filters',
 ]

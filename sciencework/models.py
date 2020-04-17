@@ -1,6 +1,10 @@
 from django.db import models
 from authors.models import Author, Subdivision
+from dashboard.models import DashBoard
 from django.contrib.auth.models import User
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Publicationkind(models.Model):
@@ -207,7 +211,7 @@ class Sciencework(models.Model):
     conference = models.ForeignKey(Conference, on_delete=models.SET_NULL, blank=True, null=True,
                                    verbose_name="Конференция")
     work_is_foreignauthors = models.BooleanField(blank=True, null=True, verbose_name="Участие сторонних авторов")
-    author_count = models.IntegerField(default=0, blank=True, null=True, verbose_name="Количество авторов")
+    other_author_count = models.IntegerField(default=0, blank=True, null=True, verbose_name="Количество сторонних авторов")
     sciencework_student_participation = models.BooleanField(blank=True, null=True, default=False,
                                                             verbose_name="Участие обучающихся")
     authors = models.ManyToManyField(Author, verbose_name="Авторы")
@@ -228,3 +232,14 @@ class Sciencework(models.Model):
 
     def __str__(self):
         return self.output_data if self.output_data else "blank"
+
+
+@receiver(post_save, sender=Sciencework)
+def activity_handler(sender, instance, **kwargs):
+    obj = Sciencework.objects.filter(pk=instance.id)[0]
+    if obj.date_added is not None and obj.user_added is not None:
+        dash_board = DashBoard(user=obj.user_added,
+                               activity_date=obj.date_added,
+                               activity_class=obj.__class__.__name__
+                               )
+        dash_board.save()
