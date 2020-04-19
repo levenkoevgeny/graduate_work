@@ -4,7 +4,7 @@
 
 {% block title %}Index{% endblock %}
 {% block nav %}
-        {% include "index/common/navs/nav_index.html" %}
+    {% include "index/common/navs/nav_index.html" %}
 {% endblock %}
 
 {% block content %}
@@ -15,23 +15,44 @@
             <p class="lead">Вас приветствует программное средство учета и анализа результатов научной деятельности Академии МВД Республики Беларусь!</p>
             <hr class="my-4">
             <p>Для перехода в нужный раздел воспользуйтесь панелью навигации</p>
-            <div class="row mb-3">
-                <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
-                    <a href="{% url 'authors:list' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="fas fa-pen fa-lg"></i>&nbsp;Ввод материалов</a>
+            {% if user.is_authenticated %}
+                {% if perms.dashboard %}
+                    <div class="row mb-3">
+                        <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
+                            <a href="{% url 'authors:list' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="fas fa-pen fa-lg"></i>&nbsp;Ввод материалов</a>
+                        </div>
+                        <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:main' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-registered"></i>&nbsp;Панель активности</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
+                            <a href="" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-eye fa-lg"></i>&nbsp;Отчетная документация</a>
+                        </div>
+                        <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center mb-3 mb-md-0">
+                            <a href="{% url 'index:about' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-registered"></i>&nbsp;О программе</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
+                            <a href="{% url 'authors:list' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="fas fa-pen fa-lg"></i>&nbsp;Ввод материалов</a>
+                        </div>
+                        <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center mb-3 mb-md-0">
+                            <a href="{% url 'index:about' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-registered"></i>&nbsp;О программе</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="row mb-3">
+                    <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
+                        <a href="{% url 'authors:list' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-eye fa-lg"></i>&nbsp;Просмотр материалов</a>
+                    </div>
+                    <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center mb-3 mb-md-0">
+                        <a href="{% url 'index:about' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-registered"></i>&nbsp;О программе</a>
+                    </div>
                 </div>
-                <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center">
-                    <a href="" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-chart-bar fa-lg"></i>&nbsp;Отчетная документация</a>
-                </div>
-                <div class="col-lg-2 col-xl-3 "></div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 d-flex flex-row justify-content-md-end justify-content-center mb-3 mb-md-0">
-                    <a href="/admin" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="fas fa-cogs"></i>&nbsp;Администрирование</a>
-                </div>
-                <div class="col-md-6 d-flex flex-row justify-content-md-start justify-content-center mb-3 mb-md-0">
-                    <a href="{% url 'index:about' %}" class="btn btn-secondary d-flex justify-content-center align-items-center" style="height: 120px; width: 250px; min-width: 250px;"><i class="far fa-registered"></i>&nbsp;О программе</a>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

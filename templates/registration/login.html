@@ -7,14 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/loginpage.css' %}">
 {% endblock %}
 {% block content %}
-
     <section class="section">
 
         <div class="login-form">
             {% if form.errors %}
                 <p>Логин либо пароль введены неверно! Попробуйте еще раз!</p>
             {% endif %}
-
             {% if user.is_authenticated %}
                 <p>У Вас нет прав на просмотр данной страницы! Чтобы продолжить войдите под учетной записью пользователя с соответствующими правами!</p>
             {% endif %}

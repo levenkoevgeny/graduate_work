@@ -5,18 +5,45 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index:index' %}">На главную<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'authors:list' %}">Ввод материалов</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Отчетная документация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'index:about' %}">О программе</a>
-            </li>
+
+            {% if user.is_authenticated  %}
+                {% if perms.dashboard %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'index:index' %}">На главную<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'authors:list' %}">Ввод документов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Отчетная документация</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:main' %}">Панель активности</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index:about' %}">О программе</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'index:index' %}">На главную<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'authors:list' %}">Ввод документов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index:about' %}">О программе</a>
+                    </li>
+
+                {% endif %}
+
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index:index' %}">На главную<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index:about' %}">О программе</a>
+                </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav">
             {% if user.is_authenticated  %}
@@ -28,7 +55,7 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href=""><i class="fas fa-user"></i> Вход в систему</a>
+                    <a class="nav-link" href="{% url 'login'  %}"><i class="fas fa-user"></i> Вход в систему</a>
                 </li>
             {% endif %}
         </ul>

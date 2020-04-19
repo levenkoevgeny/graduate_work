@@ -4,11 +4,11 @@
 {% load url_replace %}
 
 {% block nav %}
-        {% include "index/common/navs/nav.html" %}
+    {% include "index/common/navs/nav.html" %}
 {% endblock %}
 
 {% block side_panel %}
-        {% include "index/common/navs/side_panel_main.html"%}
+    {% include "index/common/navs/side_panel_main.html"%}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,9 @@
         <br>
         <div class="row">
             <div class="col-sm-12 d-flex justify-content-end">
-                {% block add_button %}{% endblock %}
+                {% if user.is_authenticated %}
+                    {% block add_button %}{% endblock %}
+                {% endif %}
             </div>
         </div>
         <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#form_filters" aria-controls="form_filters">Фильтры</button>

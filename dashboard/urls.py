@@ -1,10 +1,10 @@
 from django.urls import path
 from . import views
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 
 app_name = 'dashboard'
 
 urlpatterns = [
-    path('', login_required(views.dashboard), name='main'),
-    path('<user_id>/activity/', views.dashboard_item, name='item'),
+    path('', permission_required('dashboard.add_dashboard')(views.dashboard), name='main'),
+    path('<user_id>/activity/', permission_required('anr.add_dashboard')(views.dashboard_item), name='item'),
 ]
