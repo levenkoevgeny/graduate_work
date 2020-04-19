@@ -1,0 +1,21 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<form action="{% url 'dashboard:item'  user_id=user_id %}" method="get">
+
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label>Дата (с)</label>
+                {% render_field filter.form.activity_date_since class+="form-control"  %}
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="form-group">
+                <label>Дата (по)</label>
+                {% render_field filter.form.activity_date_till class+="form-control"  %}
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-outline-dark">Поиск</button>&nbsp;&nbsp;<a href="{% url 'dashboard:item' user_id=user_id %}" class="btn btn-outline-dark">Сбросить фильтр</a>
+</form>

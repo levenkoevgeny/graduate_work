@@ -1,0 +1,36 @@
+{% extends "base_list.html" %}
+
+{% load url_replace %}
+{% load static %}
+
+{% block title %}Активность{% endblock %}
+
+{% block filters %}
+    {% include "dashboard/filters.html" %}
+{% endblock %}
+
+{% block list %}
+    <table class="table table-sm">
+        <thead class="table-active">
+        <tr>
+            <th>Id</th>
+            <th>Дата активности</th>
+            <th>Класс активности</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for dashboard in list %}
+            <tr>
+                <th>{{ dashboard.id }}</th>
+                <td>{{ dashboard.activity_date }}</td>
+                <td>{{ dashboard.activity_class }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block own_js %}
+{% endblock %}
+

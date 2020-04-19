@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load dashboard_tags %}
+
+
+{% block title %}Dashboard{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav_index.html" %}
+{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="container d-inline-flex">
+        {% for user in user_list %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ user.last_name }} {{ user.first_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Дата и время последней активности - {{ dashboard_list|last_activity:user.id }}</h6>
+                    <p class="card-text">Внесего работ:<br>
+                        всего - {{ dashboard_list|work_count:user.id }}<br>
+                        за текущий месяц - {{ dashboard_list|work_count_last_month:user.id }}</p>
+                    <a href="{% url 'dashboard:item' user.id %}" class="card-link">Перейти к списку внесенных работ</a>
+                </div>
+            </div>
+            &nbsp; &nbsp;
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -41,7 +41,7 @@
                 <td>{{ author.get_full_name }}</td>
                 <td>{{ author.date_of_birth|date:"d.m.Y" }}</td>
                 <td title="{{ author.subdivision }}">{{ author.subdivision.subdivision_short_name }}</td>
-                <td>{{ author.position }}</td>
+                <td>{{ author.position|default:"Нет данных" }}</td>
                 <td>{{ author.rank }}</td>
                 <td>{{ author.get_is_docent_vak }}</td>
                 <td>{{ author.get_is_professor }}</td>

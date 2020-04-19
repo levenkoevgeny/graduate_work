@@ -1,5 +1,5 @@
 from django.db import models
-from authors.models import Author,Subdivision
+from authors.models import Author, Subdivision
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
