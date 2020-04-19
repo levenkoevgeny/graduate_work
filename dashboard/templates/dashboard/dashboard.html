@@ -14,10 +14,9 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <br>
+    <div class="col-md-10">
         {% for user in user_list %}
-            <div class="card" style="width: 18rem;">
+            <div class="card d-inline-flex mt-3" style="width: 18rem;height: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ user.last_name }} {{ user.first_name }}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Дата и время последней активности - {{ dashboard_list|last_activity:user.id }}</h6>
@@ -28,6 +27,8 @@
                 </div>
             </div>
             &nbsp; &nbsp;
+
         {% endfor %}
+
     </div>
 {% endblock %}
