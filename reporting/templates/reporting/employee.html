@@ -12,7 +12,69 @@
     {% include "index/common/navs/side_panel_reporting.html" %}
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="col-md-10">
+        <form  action="" method="get">{% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Сотрудник</label>
+                        {% if author %}
+                            <select class="employee_select form-control" name="employee_id" id="employee_id" required>
+                                <option disabled></option>
+                                {% for  author_for_select in author_list %}
+                                    {% if author_for_select.id == author.id %}
+                                        <option selected value="{{ author_for_select.id }}">{{ author_for_select.lastname }} {{ author_for_select.firstname|slice:":1" }}.{{ author_for_select.patronymic|slice:":1" }}. {{ author_for_select.subdivision.subdivisionname }}</option>
+                                    {% else %}
+                                        <option value="{{ author_for_select.id }}">{{ author_for_select.lastname }} {{ author_for_select.firstname|slice:":1" }}.{{ author_for_select.patronymic|slice:":1" }}. {{ author_for_select.subdivision.subdivisionname }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <select class="employee_select form-control" name="employee_id" id="employee_id" required>
+                                <option selected disabled></option>
+                                {% for author in author_list %}
+                                    <option value="{{ author.id }}">{{ author.lastname }} {{ author.firstname|slice:":1" }}.{{ author.patronymic|slice:":1" }}. {{ author.subdivision.subdivisionname }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <div class="row d-flex flex-row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>С (год начала)</label>
+                        <input type="number" class="form-control" name="year_since" id="year_since" min="1900" max="2035"
+                                {% if year_since %}
+                               value="{{ year_since }}"
+                                {% else %}
+                               value="2019"
+                                {% endif %}
+                               required>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>По (год окончания)</label>
+                        <input type="number" class="form-control" name="year_till" id="year_till" min="1900" max="2035"
+                                {% if year_till %}
+                               value="{{ year_till }}"
+                                {% else %}
+                               value="2019"
+                                {% endif %}
+                               required>
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
+
+
+
+
+
 
     </div>
 {% endblock %}

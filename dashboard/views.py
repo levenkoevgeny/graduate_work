@@ -7,10 +7,8 @@ from django.shortcuts import get_object_or_404
 
 
 def dashboard(request):
-    user_list = User.objects.all()
-    dashboard_list = DashBoard.objects.all()
-    return render(request, 'dashboard/dashboard.html', {'user_list': user_list,
-                                                        'dashboard_list': dashboard_list
+    return render(request, 'dashboard/dashboard.html', {'user_list': User.objects.all().order_by('last_name'),
+                                                        'dashboard_list': DashBoard.objects.all()
                                                         })
 
 
@@ -20,9 +18,8 @@ def dashboard_item(request, user_id):
     paginator = Paginator(f.qs, 50)
     page = request.GET.get('page')
     works = paginator.get_page(page)
-    user_list = User.objects.all()
     return render(request, 'dashboard/dashboard_item.html', {'list': works,
                                                              'filter': f,
                                                              'user_id': user_id,
-                                                             'user_list': user_list
+                                                             'user_list': User.objects.all().order_by('last_name')
                                                              })

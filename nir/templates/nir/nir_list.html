@@ -36,16 +36,16 @@
         {% for nir in list %}
             <tr>
                 <td>{{ nir.id }}</td>
-                <td>{{ nir.nir_title }}</td>
-                <td>{{ nir.get_reasons }}</td>
-                <td>{{ nir.plan_item }}</td>
-                <td>{{ nir.start_date }}</td>
-                <td>{{ nir.end_date }}</td>
+                <td>{{ nir.nir_title|default:"Нет данных" }}</td>
+                <td>{{ nir.get_reasons|default:"Нет данных" }}</td>
+                <td>{{ nir.plan_item|default:"Нет данных" }}</td>
+                <td>{{ nir.start_date|default:"Нет данных" }}</td>
+                <td>{{ nir.end_date|default:"Нет данных" }}</td>
                 <td>{{ nir.get_authors }}</td>
                 <td>{{ nir.get_subdivisions }}</td>
                 <td>{{ nir.nir_leader.get_full_name }}</td>
-                <td>{{ nir.result }}</td>
-                <td>{{ nir.approve_date }}</td>
+                <td>{{ nir.result|default:"Нет данных" }}</td>
+                <td>{{ nir.approve_date|default:"Нет данных" }}</td>
                 <td><a href="{% url 'nir:update' nir.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
                 <td><a href="{% url 'nir:delete' nir.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
