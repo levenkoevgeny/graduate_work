@@ -3,7 +3,7 @@
     <div><b>Ввод данных</b></div>
     <ul id="navigate">
         <li id="setemployeepage"><a class="nav-link" href="{% url 'authors:list' %}" style="color: black;"><i class="far fa-address-card"></i> Сотрудники Академии <span class="badge badge-secondary">{{ author_count }}</span></a></li>
-        <li id="setsubdivisionpage"><a class="nav-link" href="{% url 'sciencework:list' %}" style="color: black;"><i class="fas fa-book"></i> Публикации <span class="badge badge-secondary">{{ sciencework_count }}</span></a></li>
+        <li id="setsubdivisionpage"><a class="nav-link" href="{% url 'sciencework:list' %}" style="color: black;"><i class="fas fa-book"></i> Научные работы <span class="badge badge-secondary">{{ sciencework_count }}</span></a></li>
         <li id="setsubdivisionpage"><a class="nav-link" href="{% url 'nir:list' %}" style="color: black;"><i class="fas fa-book"></i> Научно-исследовательские работы <span class="badge badge-secondary">{{ nir_count }}</span></a></li>
         <li id="setsubdivisionpage"><a class="nav-link" href="{% url 'pld:list' %}" style="color: black;"><i class="far fa-newspaper"></i> Патентно-лицензионная деятельность <span class="badge badge-secondary">{{ pld_count }}</span></a></li>
         <li id="setsubdivisionpage"><a class="nav-link" href="{% url 'dissertation:list' %}" style="color: black;"><i class="far fa-newspaper"></i> Диссертационные исследования <span class="badge badge-secondary">{{ dissertation_count }}</span></a></li>

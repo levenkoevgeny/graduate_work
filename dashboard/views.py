@@ -4,7 +4,6 @@ from .models import DashBoard
 from django.core.paginator import Paginator
 from .filters import DashBoardItemFilter
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import permission_required
 
 
 def dashboard(request):
@@ -21,7 +20,9 @@ def dashboard_item(request, user_id):
     paginator = Paginator(f.qs, 50)
     page = request.GET.get('page')
     works = paginator.get_page(page)
+    user_list = User.objects.all()
     return render(request, 'dashboard/dashboard_item.html', {'list': works,
                                                              'filter': f,
-                                                             'user_id': user_id
+                                                             'user_id': user_id,
+                                                             'user_list': user_list
                                                              })

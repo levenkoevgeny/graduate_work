@@ -6,12 +6,16 @@
 
 {% block title %}Dashboard{% endblock %}
 {% block nav %}
-    {% include "index/common/navs/nav_index.html" %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_dashboard.html" %}
 {% endblock %}
 
 {% block content %}
-    <br>
-    <div class="container d-inline-flex">
+    <div>
+        <br>
         {% for user in user_list %}
             <div class="card" style="width: 18rem;">
                 <div class="card-body">

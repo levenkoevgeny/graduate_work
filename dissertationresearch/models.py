@@ -89,7 +89,7 @@ def activity_handler(sender, instance, **kwargs):
     obj = DissertationResearch.objects.filter(pk=instance.id)[0]
     dash_board = DashBoard(user=obj.user_added,
                            activity_date=obj.date_added,
-                           activity_class=obj.__class__.__name__
+                           activity_class=obj._meta.verbose_name
                            )
     dash_board.save()
 

@@ -9,6 +9,10 @@
     {% include "dashboard/filters.html" %}
 {% endblock %}
 
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_dashboard.html" %}
+{% endblock %}
+
 {% block list %}
     <table class="table table-sm">
         <thead class="table-active">

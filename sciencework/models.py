@@ -240,6 +240,6 @@ def activity_handler(sender, instance, **kwargs):
     if obj.date_added is not None and obj.user_added is not None:
         dash_board = DashBoard(user=obj.user_added,
                                activity_date=obj.date_added,
-                               activity_class=obj.__class__.__name__
+                               activity_class=obj._meta.verbose_name
                                )
         dash_board.save()
