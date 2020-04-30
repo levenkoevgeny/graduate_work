@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from authors.models import Author
 from nir.models import NIR
+from sciencework.models import Publicationkind, Grif
 import datetime
 from django.db.models import Q
 
@@ -50,7 +51,9 @@ def employee(request):
                                                            'year_since': request.GET['year_since'],
                                                            'nir_list': nir_list_author,
                                                            'anr_list': anr_list,
-                                                           'author_list': author_list
+                                                           'author_list': author_list,
+                                                           'publicationkindlist': Publicationkind.objects.all(),
+                                                           'griflist': Grif.objects.all(),
                                                            })
     else:
         return render(request, 'reporting/employee.html', {
