@@ -45,24 +45,24 @@ def sciencework_count_all_kind(value, args):
 
 @register.filter(name='sciencework_publication_all_invak')
 def sciencework_publication_all_invak(value, args):
-    return value.filter(kind_id=args).filter(invak=True).count()
+    return value.filter(kind_id=args).filter(in_vak=True).count()
 
 
 @register.filter(name='sciencework_publication_all_not_invak')
 def sciencework_publication_all_not_invak(value, args):
-    return value.filter(kind_id=args).filter(invak=False).count()
+    return value.filter(kind_id=args).filter(in_vak=False).count()
 
 
 @register.filter(name='sciencework_publication_invak')
 def sciencework_publication_invak(value, args):
     arg_list = [arg.strip() for arg in args.split(',')]
-    return value.filter(kind_id=arg_list[0]).filter(year=arg_list[1]).filter(invak=True).count()
+    return value.filter(kind_id=arg_list[0]).filter(year=arg_list[1]).filter(in_vak=True).count()
 
 
 @register.filter(name='sciencework_publication_not_invak')
 def sciencework_publication_not_invak(value, args):
     arg_list = [arg.strip() for arg in args.split(',')]
-    return value.filter(kind_id=arg_list[0]).filter(year=arg_list[1]).filter(invak=False).count()
+    return value.filter(kind_id=arg_list[0]).filter(year=arg_list[1]).filter(in_vak=False).count()
 
 
 @register.filter(name='anr_year')

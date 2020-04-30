@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Сводный отчет по кафедре{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-sm-10 ">
+        <br>
+        <form  action="{% url 'reporting:subdivision' %}" method="get">{% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Кафедра</label>
+                        {% if subdivision %}
+                            <select class="subdivision_select form-control" name="subdivision_id" id="subdivision_id" required>
+                                <option disabled></option>
+                                {% for  subdivision_for_select in subdivision_list %}
+                                    {% if subdivision_for_select.id == subdivision.id %}
+                                        <option selected value="{{ subdivision_for_select.id }}">{{ subdivision_for_select }}</option>
+                                    {% else %}
+                                        <option value="{{ subdivision_for_select.id }}">{{ subdivision_for_select }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <select class="subdivision_select form-control" name="subdivision_id" id="subdivision_id" required>
+                                <option selected disabled></option>
+                                {% for subdivision in subdivision_list %}
+                                    <option value="{{ subdivision.id }}">{{ subdivision }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <div class="row d-flex flex-row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>С (год начала)</label>
+                        <input type="number" class="form-control" name="year_since" id="year_since" min="1900" max="2035"
+                                {% if year_since %}
+                               value="{{ year_since }}"
+                                {% else %}
+                               value="2019"
+                                {% endif %}
+                               required>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>По (год окончания)</label>
+                        <input type="number" class="form-control" name="year_till" id="year_till" min="1900" max="2035"
+                                {% if year_till %}
+                               value="{{ year_till }}"
+                                {% else %}
+                               value="2019"
+                                {% endif %}
+                               required>
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </form>
+        <br>
+        {% if subdivision %}
+            {% if publication_list %}
+                <table class="table table-sm table-responsive table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" colspan="4">Отчет по кафедре</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Год издания</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Вид публикации</th>
+                        <th scope="col">Выходные данные</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for publication in publication_list %}
+                        <tr>
+                            <td>{{ publication.year }}</td>
+                            <td>
+                                {% for author in  publication.authors.all %}
+                                    {{ author.get_full_name }}<br>
+                                {% endfor %}
+                            </td>
+                            <td>{{ publication.kind.publication_kind }}</td>
+                            <td>{{ publication.output_data }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <table class="table table-sm table-responsive table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Год издания</th>
+                        <th scope="col">Количество публикаций (по видам и по году издания)</th>
+                        <th scope="col">Общее количество публикаций (по годам и всего)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for year in year_list %}
+                        {% if publication_list|sciencework_count_all:year != 0 %}
+                            <tr>
+                                <td>{{ year }}</td>
+                                <td>
+                                    {% for kind in publicationkindlist %}
+                                        {% with args=kind.id|add_string:year  %}
+                                            {% if kind.id == 3 %}
+                                                {{ kind }} - {{ publication_list|sciencework_count:args }}<br>
+                                                {% if publication_list|sciencework_count:args != 0 %}
+                                                    Из них:<br>
+                                                    {% for subspecies in subspecieslist %}
+                                                        {% with args_subspecies=subspecies.id|add_string:year  %}
+                                                            {% if publication_list|sciencework_count_subspecies:args_subspecies != 0 %}
+                                                                {{ subspecies }} - {{ publication_list|sciencework_count_subspecies:args_subspecies }}<br>
+                                                            {%  endif %}
+                                                        {% endwith %}
+                                                    {% endfor %}
+                                                    {% for grif in griflist %}
+                                                        {% with args_grif=grif.id|add_string:year  %}
+                                                            {% if publication_list|sciencework_count_grif:args_grif != 0 %}
+                                                                {{ grif.grif_name }} - {{ publication_list|sciencework_count_grif:args_grif }}<br>
+                                                            {%  endif %}
+                                                        {% endwith %}
+                                                    {% endfor %}
+                                                {%  endif %}
+                                            {% elif kind.id == 9 %}
+                                                {{ kind }} - {{ publication_list|sciencework_count:args }}<br>
+                                                {% if publication_list|sciencework_count:args != 0 %}
+                                                    Из них:<br>
+                                                    ВАК - {{ publication_list|sciencework_publication_invak:args }}<br>
+                                                    Не ВАК - {{ publication_list|sciencework_publication_not_invak:args }}<br>
+                                                {%  endif %}
+                                            {% else %}
+                                                {{ kind }} - {{ publication_list|sciencework_count:args }}<br>
+                                            {%  endif %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    Всего за год - {{ publication_list|sciencework_count_all:year }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td><b>Всего за период</b></td>
+                        <td>
+                            {% for kind in publicationkindlist %}
+                                {% if kind.id == 3 %}
+                                    <b>{{ kind }} - {{ publication_list|sciencework_count_all_kind:kind.id }}</b><br>
+                                    <b>Из них:</b><br>
+                                    {% for subspecies in subspecieslist %}
+                                        {% if publication_list|sciencework_count_all_subspecies:subspecies.id != 0 %}
+                                            <b>{{ subspecies }} - {{ publication_list|sciencework_count_all_subspecies:subspecies.id }}</b><br>
+                                        {%  endif %}
+                                    {% endfor %}
+                                    <b>По грифам:</b><br>
+                                    {% for grif in griflist %}
+                                        {% if publication_list|sciencework_count_all_grif:grif.id != 0 %}
+                                            <b>{{ grif.grif_name }} - {{ publication_list|sciencework_count_all_grif:grif.id }}</b><br>
+                                        {%  endif %}
+                                    {% endfor %}
+                                {% elif kind.id == 9 %}
+                                    {% if publication_list|sciencework_count_all_kind:kind.id != 0 %}
+                                        <b> {{ kind }} - {{ publication_list|sciencework_count_all_kind:kind.id }}</b><br>
+                                        <b>Из них:</b><br>
+                                        <b>ВАК - {{ publication_list|sciencework_publication_all_invak:kind.id }}</b><br>
+                                        <b>Не ВАК - {{ publication_list|sciencework_publication_all_not_invak:kind.id }}</b><br>
+                                    {%  endif %}
+                                {% else %}
+                                    <b>{{ kind }} - {{ publication_list|sciencework_count_all_kind:kind.id }}</b><br>
+                                {%  endif %}
+                            {% endfor %}
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><b>Всего научных работ - {{ publication_list|length }}</b></td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                <p><b>За выбранный период нет публикаций</b></p>
+            {% endif %}
+
+            {% if nir_list %}
+                <table class="table table-sm table-responsive table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" colspan="7">Участие в выполнении НИР</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Наименование НИР</th>
+                        <th scope="col">Авторы</th>
+                        <th scope="col">Основание для проведения НИР</th>
+                        <th scope="col">Пункт плана НИД Академии МВД</th>
+                        <th scope="col">Сроки проведения</th>
+                        <th scope="col">Дата утверждения отчета</th>
+                        <th scope="col">Результат проведения</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for nir in nir_list %}
+                        <tr>
+                            <td> {{ nir.nir_title }}</td>
+                            <td>
+                                {% for author in nir.authors.all %}
+                                    {{ author.get_full_name }}<br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for reason in nir.reason.all %}
+                                    {{ reason.reason_name }}<br>
+                                {% endfor %}
+                            </td>
+                            <td>{{ nir.planitem|default_if_none:"Нет данных" }}</td>
+                            <td>{{ nir.start_date|default_if_none:"Нет данных" }} - {{ nir.end_date|default_if_none:"Нет данных" }}</td>
+                            <td>{{ nir.approve_date|default_if_none:"Нет данных" }}</td>
+                            <td>{{ nir.result|default_if_none:"Нет данных" }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p><b>За выбранный период нет НИР</b></p>
+            {% endif %}
+
+            {% if anr_list %}
+                <table class="table table-sm table-responsive table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" colspan="6">Апробация научных результатов</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Вид внедренной разработки</th>
+                        <th scope="col">Название разработки</th>
+                        <th scope="col">Авторы</th>
+                        <th scope="col">Вид внедрения</th>
+                        <th scope="col">Место внедрения</th>
+                        <th scope="col">Дата утверждения акта</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for anr in anr_list %}
+                        <tr>
+                            <td> {{ anr.development_kind|default_if_none:"Нет данных" }}</td>
+                            <td>
+                                {% if anr.sciencework %}
+                                    {{ anr.sciencework }}
+                                {% endif %}
+                                {% if anr.nir %}
+                                    {{ anr.nir }}
+                                {% endif %}
+                                {% if anr.dissertation %}
+                                    {{ anr.dissertation }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for author in anr.authors.all %}
+                                    {{ author.get_full_name }}<br>
+                                {% endfor %}
+                            </td>
+                            <td> {{ anr.introduction_kind|default_if_none:"Нет данных" }}</td>
+                            <td> {{ anr.introduction_organization|default_if_none:"Нет данных" }}</td>
+                            <td><nobr>{{ anr.approve_date|default_if_none:"Нет данных" }}</nobr></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p><b>За выбранный период нет АНР</b></p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

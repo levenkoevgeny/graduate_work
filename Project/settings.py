@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'context_processors.side_panel_context.counts',
+                'context_processors.reporting_context.reporting',
             ],
         },
     },
