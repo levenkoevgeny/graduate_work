@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import permission_required
 app_name = 'reporting'
 
 urlpatterns = [
-    path('employee/', views.employee, name='employee'),
-    path('subdivision/', views.subdivision, name='subdivision'),
+    path('employee/', permission_required('reporting')(views.employee), name='employee'),
+    path('subdivision/', permission_required('reporting')(views.subdivision), name='subdivision'),
     # path('employee_rating/', login_required(views.employee_rating), name='employee_rating'),
     # path('employee_rating_all/', login_required(views.employee_rating_table), name='employee_rating_all'),
     # path('subdivision_rating/', login_required(views.subdivision_rating), name='subdivision_rating'),
