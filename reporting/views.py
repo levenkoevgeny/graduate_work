@@ -12,6 +12,7 @@ def employee(request):
         publicationlist = author.sciencework_set.all().filter(year__gte=request.GET['year_since']).filter(
             year__lte=request.GET['year_till']).order_by('year', 'kind__publicationkind')
 
+
         nir_list = NIR.objects.filter(start_date__year__lte=request.GET['year_till']).exclude(end_date__year__lt=request.GET['year_since'])
         # filter(start_date__year__lte=request.GET['year_till']).exclude(end_date__year__lt=request.GET['year_since'])
         # nir_list_author = nir_list.filter(authors=author)
