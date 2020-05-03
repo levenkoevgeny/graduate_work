@@ -4,12 +4,12 @@
     <ul id="navigate">
         <li><a class="nav-link" href="{% url 'reporting:employee' %}" style="color: black;"><i class="fas fa-file-alt"></i> Анкета сотрудника</a></li>
         <li><a class="nav-link" href="{% url 'reporting:subdivision' %}" style="color: black;"><i class="fas fa-file-alt"></i> Отчет по кафедре</a></li>
-        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Отчет Результативность НИД</a></li>
+{#        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Отчет Результативность НИД</a></li>#}
         <li><a class="nav-link" href="{% url 'reporting:magazines' %}" style="color: black;"><i class="fas fa-file-alt"></i> Отчет ЖУРНАЛЫ</a></li>
         <li><a class="nav-link" href="{% url 'reporting:sciencetific_activities' %}" style="color: black;"><i class="fas fa-file-alt"></i> Отчет Научные мероприятия</a></li>
-        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Рейтинг сотрудника</a></li>
-        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Общий рейтинг сотрудников</a></li>
-        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Рейтинг кафедры</a></li>
-        <li><a class="nav-link" href="" style="color: black;"><i class="fas fa-file-alt"></i> Общий рейтинг кафедр</a></li>
+        <li><a class="nav-link" href="{% url 'reporting:employee_rating' %}" style="color: black;"><i class="fas fa-file-alt"></i> Рейтинг сотрудника</a></li>
+        <li><a class="nav-link" href="{% url 'reporting:employee_rating_all' %}" style="color: black;"><i class="fas fa-file-alt"></i> Общий рейтинг сотрудников</a></li>
+        <li><a class="nav-link" href="{% url 'reporting:subdivision_rating' %}" style="color: black;"><i class="fas fa-file-alt"></i> Рейтинг кафедры</a></li>
+        <li><a class="nav-link" href="{% url 'reporting:subdivision_rating_all' %}" style="color: black;"><i class="fas fa-file-alt"></i> Общий рейтинг кафедр</a></li>
     </ul>
 </div>

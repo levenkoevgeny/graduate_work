@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Рейтинг кафедры{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-md-10">
+        <br>
+        <p><b>Рейтинг кафедры</b></p>
+        <form  action="{% url 'reporting:subdivision_rating' %}" method="get">{% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Кафедра</label>
+                        {% if subdivision %}
+                            <select class="employee_select form-control" name="subdivision_id" id="subdivision_id" required>
+                                <option disabled></option>
+                                {% for  subdivision_for_select in subdivision_list %}
+                                    {% if subdivision_for_select.id == subdivision.id %}
+                                        <option selected value="{{ subdivision_for_select.id }}">{{ subdivision_for_select }}</option>
+                                    {% else %}
+                                        <option value="{{ subdivision_for_select.id }}">{{ subdivision_for_select }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <select class="employee_select form-control" name="subdivision_id" id="subdivision_id" required>
+                                <option selected disabled></option>
+                                {% for subdivision in subdivision_list %}
+                                    <option value="{{ subdivision.id }}">{{ subdivision }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Расчитать рейтинг</button>
+        </form>
+        <br>
+        {% if rating %}
+            <h1>Рейтинг - {{ rating }} баллов</h1>
+        {% endif %}
+
+        {% for item in сouncil_list %}
+
+            {{ item }}<br>
+
+        {% endfor %}
+
+    </div>
+{% endblock %}

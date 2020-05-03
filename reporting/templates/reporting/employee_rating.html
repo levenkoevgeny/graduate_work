@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Рейтинг автора{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-md-10">
+        <br>
+        <p><b>Рейтинг автора</b></p>
+        <form  action="" method="get">{% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Сотрудник</label>
+                        {% if author %}
+                            <select class="employee_select form-control" name="employee_id" id="employee_id" required>
+                                <option disabled></option>
+                                {% for  author_for_select in author_list %}
+                                    {% if author_for_select.id == author.id %}
+                                        <option selected value="{{ author_for_select.id }}">{{ author_for_select.lastname }} {{ author_for_select.firstname|slice:":1" }}.{{ author_for_select.patronymic|slice:":1" }}. {{ author_for_select.subdivision.subdivisionname }}</option>
+                                    {% else %}
+                                        <option value="{{ author_for_select.id }}">{{ author_for_select.lastname }} {{ author_for_select.firstname|slice:":1" }}.{{ author_for_select.patronymic|slice:":1" }}. {{ author_for_select.subdivision.subdivisionname }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            <select class="employee_select form-control" name="employee_id" id="employee_id" required>
+                                <option selected disabled></option>
+                                {% for author in author_list %}
+                                    <option value="{{ author.id }}">{{ author.lastname }} {{ author.firstname|slice:":1" }}.{{ author.patronymic|slice:":1" }}. {{ author.subdivision.subdivisionname }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Расчитать рейтинг</button>
+        </form>
+        <br>
+        {% if rating %}
+            <h1>Рейтинг - {{ rating }} баллов</h1>
+        {% endif %}
+        {% for item in сouncil_list %}
+            {{ item }}<br>
+        {% endfor %}
+    </div>
+{% endblock %}

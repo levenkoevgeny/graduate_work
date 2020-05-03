@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Рейтинг авторов{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-md-10">
+        <br>
+        <p><b>Рейтинг авторов</b></p>
+        <form  action="{% url 'reporting:employee_rating_all' %}" method="post">{% csrf_token %}
+            <button type="submit" class="btn btn-info">Пересчитать рейтинг всех сотрудников</button>
+        </form>
+        <br>
+        <table class="table table-sm table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Сотрудник</th>
+                <th scope="col">Рейтинг в баллах</th>
+                <th scope="col">Итоговое место</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rating in rating_list %}
+                <tr>
+                <td>{{ rating.author }}</td>
+                <td>{{ rating.rating }}</td>
+                <td>{{ rating.place }}</td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
