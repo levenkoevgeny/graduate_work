@@ -44,8 +44,10 @@
                 <td>{{ disser.date_begin }}</td>
                 <td>{{ disser.date_end }}</td>
                 <td>{{ disser.result }}</td>
-                <td><a href="{% url 'dissertation:update' disser.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
-                <td><a href="{% url 'dissertation:delete' disser.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% if user.is_authenticated %}
+                    <td><a href="{% url 'dissertation:update' disser.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
+                    <td><a href="{% url 'dissertation:delete' disser.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

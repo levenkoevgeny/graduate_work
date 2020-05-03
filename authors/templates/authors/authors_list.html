@@ -49,8 +49,10 @@
                 <td title="{{ author.candidate_specialty.candidate_specialty_title }}">{{ author.candidate_specialty.candidate_specialty_title|truncatechars:30|default:"Нет" }}</td>
                 <td title="{{ author.doctor_title }}">{{ author.doctor_title|truncatechars:30|default:"Нет" }}</td>
                 <td title="{{ author.doctor_specialty.doctor_title }}">{{ author.doctor_specialty.doctor_specialty_title|truncatechars:30|default:"Нет" }}</td>
-                <td><a href="{% url 'authors:update' author.id %}" class="btn btn-light"><i class="fas fa-users-cog"></i></a></td>
-                <td><a href="{% url 'authors:delete' author.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% if user.is_authenticated %}
+                    <td><a href="{% url 'authors:update' author.id %}" class="btn btn-light"><i class="fas fa-users-cog"></i></a></td>
+                    <td><a href="{% url 'authors:delete' author.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

@@ -46,8 +46,10 @@
                 <td>{{ nir.nir_leader.get_full_name }}</td>
                 <td>{{ nir.result|default:"Нет данных" }}</td>
                 <td>{{ nir.approve_date|default:"Нет данных" }}</td>
-                <td><a href="{% url 'nir:update' nir.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
-                <td><a href="{% url 'nir:delete' nir.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% if user.is_authenticated %}
+                    <td><a href="{% url 'nir:update' nir.id %}" class="btn btn-light"><i class="fas fa-cog"></i></a></td>
+                    <td><a href="{% url 'nir:delete' nir.id %}" class="btn btn-light"><i class="fas fa-trash-alt"></i></a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
@@ -55,6 +57,6 @@
 {% endblock %}
 
 {% block own_js %}
-        <script src="{% static 'nir/js/nir_filters.js' %}"></script>
+    <script src="{% static 'nir/js/nir_filters.js' %}"></script>
 {% endblock %}
 
