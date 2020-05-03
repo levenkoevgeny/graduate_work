@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Отчет о научных мероприятиях{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-md-10">
+        <br>
+        <p><b>Отчет о научных мероприятиях</b></p>
+        <table class="table table-sm table-responsive table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Название мероприятия</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Страна проведения</th>
+                <th scope="col">Дата проведения</th>
+                <th scope="col">Организаторы</th>
+                <th scope="col">Количество материалов, опубликованных сотрудниками Академии МВД</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for conference in conferencelist %}
+                <tr>
+                <td>{{ conference.conference_name }}<br></td>
+                <td>{{ conference.forum_status|default_if_none:"Нет данных" }}<br></td>
+                <td>{{ conference.forum_country|default_if_none:"Нет данных" }}<br></td>
+                <td>{{ conference.forum_date|default_if_none:"Нет данных" }}<br></td>
+                <td>{{ conference.organizator_forum|default_if_none:"Нет данных" }}<br></td>
+                <td>{{ conference.sciencework_set.count }}<br></td>
+            {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -70,6 +70,10 @@ class Magazine(models.Model):
         verbose_name = 'Журнал'
         verbose_name_plural = 'Журналы'
 
+    @property
+    def get_in_vak(self):
+        return "{}".format("Да" if self.in_vak else "Нет")
+
 
 class Digest(models.Model):
     digest_name = models.CharField(max_length=255, verbose_name="Название сборника статей")
@@ -85,6 +89,10 @@ class Digest(models.Model):
         ordering = ('digest_name',)
         verbose_name = 'Сборник статей'
         verbose_name_plural = 'Сборники статей'
+
+    @property
+    def get_in_vak(self):
+        return "{}".format("Да" if self.in_vak else "Нет")
 
 
 class Statuskonf(models.Model):

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load reporting_tags %}
+
+{% block title %}Отчет по журналам и сборникам статей{% endblock %}
+{% block nav %}
+    {% include "index/common/navs/nav.html" %}
+{% endblock %}
+
+
+{% block side_panel %}
+    {% include "index/common/navs/side_panel_reporting.html" %}
+{% endblock %}
+{% block content %}
+    <div class="col-md-10">
+        <br>
+        <p><b>Отчет о журналах и сборниках статей</b></p>
+        <table class="table table-sm table-responsive table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Название журнала (сборника статей (трудов))</th>
+                <th scope="col">Перечень ВАК (да, нет)</th>
+                <th scope="col">Международная база научного цитирования (выбрать из списка)</th>
+                <th scope="col">Издательство</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for magazine in magazinelist %}
+                <tr>
+                    <td>{{ magazine.magazine_name }}</td>
+                    <td>{{ magazine.get_in_vak }}</td>
+                    <td>
+                        {% for international in magazine.in_international.all %}
+                            {{ international }}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if magazine.sciencework_set.first.publisher %}
+                            <nobr>{{ magazine.sciencework_set.first.publisher }}</nobr>
+                        {% else %}
+                            Нет
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for digest in digestlist %}
+                <tr>
+                    <td>{{ digest.digest_name }}</td>
+                    <td>{{ digest.get_in_vak }}</td>
+                    <td>
+                        {% for international in digest.in_international.all %}
+                            {{ international }}<br>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if digest.sciencework_set.first.publisher %}
+                            <nobr>{{ digest.sciencework_set.first.publisher }}</nobr>
+                        {% else %}
+                            Нет
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from authors.models import Author, Subdivision
 from nir.models import NIR
-from sciencework.models import Publicationkind, Grif
+from sciencework.models import Publicationkind, Grif, Magazine
 import datetime
 
 
@@ -78,3 +78,11 @@ def subdivision(request):
         })
     else:
         return render(request, 'reporting/subdivision_report.html')
+
+
+def magazines(request):
+    return render(request, 'reporting/magazines.html')
+
+
+def sciencetific_activities(request):
+    return render(request, 'reporting/scientific_activities.html')
