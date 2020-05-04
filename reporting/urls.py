@@ -13,6 +13,5 @@ urlpatterns = [
     path('employee_rating_all/', permission_required('reporting.add_ratingemployee')(views.employee_rating_table), name='employee_rating_all'),
     path('subdivision_rating/', permission_required('reporting.add_ratingemployee')(views.subdivision_rating), name='subdivision_rating'),
     path('subdivision_rating_all/', permission_required('reporting.add_ratingemployee')(views.subdivision_rating_table), name='subdivision_rating_all'),
-    # path('subdivision/', login_required(views.subdivision), name='subdivision'),
     # path('effectivenessnid/', login_required(views.effectivenessnid), name='effectivenessnid'),
 ]
