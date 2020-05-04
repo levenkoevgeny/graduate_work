@@ -2,8 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from authors.models import Author, Subdivision
 from nir.models import NIR
 from sciencework.models import Publicationkind, Grif, Magazine
+from dissertationresearch.models import DissertationResearch
+from pld.models import PLD
+from anr.models import ANR
+from sciencework.models import Sciencework, Conference, InternationalBase
 from reporting.models import RatingEmployee, RatingTableEmployee, RatingTableSubdivision
 import datetime
+from django.db.models import Q
 
 
 def employee(request):
@@ -47,7 +52,7 @@ def employee(request):
                                                                   'year_since': request.GET['year_since'],
                                                                   'nir_list': nir_list_author,
                                                                   'anr_list': anr_list,
-                                                                   })
+                                                                  })
     else:
         return render(request, 'reporting/employee_report.html', {
         })
@@ -210,228 +215,158 @@ def make_subdivision_rating(id):
 
 
 def make_rating(id):
-    # rating_author = get_object_or_404(Author, pk=id)
-    # rating = 0
-    # year = RatingEmployee.objects.get(pk=1).value
-    #
-    # # Раздел 1 Защита диссертации
-    #
-    # if rating_author.candidatedate is not None:
-    #     if rating_author.candidatedate.year == year:
-    #         rating = rating + RatingEmployee.objects.get(pk=2).value
-    #
-    # if rating_author.doctordate is not None:
-    #     if rating_author.doctordate.year == year:
-    #         rating = rating + RatingEmployee.objects.get(pk=3).value
-    #
-    # # Раздел 2 Подготовка кандидата или доктора наук
-    #
-    # disser_list_candidate = Dissertationresearch.objects.filter(leadersemployees=rating_author).filter(
-    #     dateprotect__year=year)
-    #
-    # rating = rating + RatingEmployee.objects.get(pk=4).value * disser_list_candidate.count()
-    #
-    # disser_list_doctor = Dissertationresearch.objects.filter(leadersemployees=rating_author).filter(
-    #     author__isnull=False).filter(author__doctordate__year=year)
-    # rating = rating + RatingEmployee.objects.get(pk=5).value * disser_list_doctor.count()
-    #
-    # # Раздел 3 Работа в специализированных советах
-    #
-    # сouncil_list = Otherkind.objects.filter(activity_id=5).filter(authors=rating_author).filter(other_year=year)
-    #
-    # for council in сouncil_list.filter(сouncil__category_id=1):
-    #     if council.completed_work_council_id == 1 or council.completed_work_council_id == 6:
-    #         rating = rating + RatingEmployee.objects.get(pk=6).value
-    #     else:
-    #         rating = rating + RatingEmployee.objects.get(pk=7).value
-    #
-    # for council in сouncil_list.filter(сouncil__category_id=2):
-    #     if council.completed_work_council_id == 1 or council.completed_work_council_id == 6:
-    #         rating = rating + RatingEmployee.objects.get(pk=8).value
-    #     else:
-    #         rating = rating + RatingEmployee.objects.get(pk=9).value
-    #
-    # for council in сouncil_list.filter(сouncil__category_id=3):
-    #     if council.completed_work_council_id == 1 or council.completed_work_council_id == 6:
-    #         rating = rating + RatingEmployee.objects.get(pk=10).value
-    #     else:
-    #         rating = rating + RatingEmployee.objects.get(pk=11).value
-    #
-    # for council in сouncil_list.filter(сouncil__category_id=4):
-    #     if council.completed_work_council_id == 1 or council.completed_work_council_id == 8:
-    #         rating = rating + RatingEmployee.objects.get(pk=12).value
-    #     else:
-    #         rating = rating + RatingEmployee.objects.get(pk=13).value
-    #
-    # for council in сouncil_list.filter(сouncil__category_id=5):
-    #     if council.completed_work_council_id == 1:
-    #         rating = rating + RatingEmployee.objects.get(pk=14).value
-    #     else:
-    #         rating = rating + RatingEmployee.objects.get(pk=15).value
-    #
-    # # Раздел 4 Экспертиза
-    #
-    # сouncil_list_expert = Otherkind.objects.filter(Q(activity_id=4) | Q(activity_id=9)).filter(
-    #     authors=rating_author).filter(other_year=year)
-    #
-    # rating = rating + сouncil_list_expert.filter(dissertation_kind_id=1).count() * RatingEmployee.objects.get(
-    #     pk=16).value
-    # rating = rating + сouncil_list_expert.filter(dissertation_kind_id=2).count() * RatingEmployee.objects.get(
-    #     pk=17).value
-    #
-    # # Раздел 5 Подготовка отзыва на автореферат
-    #
-    # сouncil_list_refer = Otherkind.objects.filter(activity_id=8).filter(
-    #     authors=rating_author).filter(other_year=year)
-    #
-    # rating = rating + сouncil_list_refer.filter(dissertation_kind_id=1).count() * RatingEmployee.objects.get(
-    #     pk=25).value
-    # rating = rating + сouncil_list_refer.filter(dissertation_kind_id=2).count() * RatingEmployee.objects.get(
-    #     pk=26).value
-    #
-    # # Раздел 6 Участие в разработке законодательных актов, концепций и т.п.
-    #
-    # сouncil_list_refer = Otherkind.objects.filter(activity_id=3).filter(
-    #     authors=rating_author).filter(other_year=year)
-    #
-    # rating = rating + сouncil_list_refer.count() * RatingEmployee.objects.get(pk=18).value
-    #
-    # # Раздел 7 ПЛД
-    #
-    # pld_list = PLD.objects.filter(authors=rating_author).filter(registrationdate__year=year)
-    #
-    # evras_list = pld_list.filter(kind_id=4)
-    # for evras in evras_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=19).value / evras.authors.count()
-    #
-    # rb_list = pld_list.filter(kind_id=2)
-    # for rb in rb_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=20).value / rb.authors.count()
-    #
-    # racional_list = pld_list.filter(kind_id=5)
-    # for racional in racional_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=21).value / racional.authors.count()
-    #
-    # programm_list = pld_list.filter(kind_id=3)
-    # for programm in programm_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=22).value / programm.authors.count()
-    #
-    # demand_list = pld_list.filter(kind_id=6)
-    # for demand in demand_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=23).value / demand.authors.count()
-    #
-    # # Раздел 8 Внедрение результатов научной деятельности
-    #
-    # anr_list = ANR.objects.filter(authors=rating_author).filter(year=year)
-    #
-    # for anr in anr_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=24).value / anr.authors.count()
-    #
-    # # Раздел 9 Отчет по НИР
-    #
-    # nir_list = NIR.objects.filter(authors=rating_author).filter(approvedate__year=year)
-    #
-    # for nir in nir_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=27).value / (nir.authors.count() + 1)
-    #
-    # # Раздел 10 Участие в составе редакционных коллегий
-    #
-    # colleg_list = Otherkind.objects.filter(activity_id=6).filter(authors=rating_author).filter(other_year=year)
-    # rating = rating + RatingEmployee.objects.get(pk=28).value * colleg_list.count()
-    #
-    # # Раздел 11 Участие в проведении НИР в рамках международных проектов и т.д.
-    #
-    # nir_list_main = NIR.objects.filter(approvedate__isnull=True).filter(Q(startdate__year__lte=year) and Q(enddate__year__gte=year))
-    #
-    # nir_list_leader = nir_list_main.filter(leadersemployees=rating_author)
-    # rating = rating + nir_list_leader.count() * RatingEmployee.objects.get(pk=41).value
-    #
-    # nir_list_member = nir_list_main.filter(authors=rating_author)
-    # rating = rating + nir_list_member.count() * RatingEmployee.objects.get(pk=42).value
-    #
-    # nir_list_other = Otherkind.objects.filter(activity_id=7).filter(authors=rating_author).filter(other_year=year)
-    # rating = rating + nir_list_other.count() * RatingEmployee.objects.get(pk=42).value
-    #
-    #
-    # # Раздел 12 Модератор научного форума / руководитель секции
-    #
-    # conference_list_international = Conference.objects.filter(moderators=rating_author).filter(forumdate__year=year).filter(forumstatus_id=2)
-    # rating = rating + RatingEmployee.objects.get(pk=29).value * conference_list_international.count()
-    #
-    # conference_list_republ = Conference.objects.filter(moderators=rating_author).filter(forumdate__year=year).filter(
-    #     Q(forumstatus_id=1) | Q(forumstatus_id=3))
-    # rating = rating + RatingEmployee.objects.get(pk=30).value * conference_list_republ.count()
-    #
-    # # Раздел 13 Публикационная активность
-    #
-    # monograph_list = Publication.objects.filter(kind_id=1).filter(authors=rating_author).filter(year=year)
-    # for monograph in monograph_list:
-    #     rating = rating + float(monograph.sheetcount) * RatingEmployee.objects.get(pk=31).value / monograph.authorcount
-    #
-    # digest_magazine_list = Publication.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
-    #     conference__isnull=True)
-    #
-    # for d_m in digest_magazine_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=44).value / d_m.authorcount
-    #
-    # vestnik_list = Publication.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
-    #     magazine_id=1)
-    # for vestnik in vestnik_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=32).value / vestnik.authorcount
-    #
-    # VAK_list = Publication.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
-    #     Q(magazine__invak=True) | Q(digest__invak=True))
-    # for vak in VAK_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=33).value / vak.authorcount
-    #
-    # scopus = get_object_or_404(InternationalBase, pk=1)
-    # scopus_list = Publication.objects.filter(Q(magazine__ininternational=scopus) | Q(digest__ininternational=scopus)).filter(authors=rating_author).filter(
-    #     year=year)
-    # for scop in scopus_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=34).value / scop.authorcount
-    #
-    # web_of_science = get_object_or_404(InternationalBase, pk=3)
-    # web_of_science_list = Publication.objects.filter(Q(magazine__ininternational=web_of_science) | Q(digest__ininternational=web_of_science)).filter(
-    #     authors=rating_author).filter(
-    #     year=year)
-    # for web in web_of_science_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=35).value / web.authorcount
-    #
-    # rinc = get_object_or_404(InternationalBase, pk=2)
-    # rinc_list = Publication.objects.filter(Q(magazine__ininternational=rinc) | Q(digest__ininternational=rinc)).filter(authors=rating_author).filter(
-    #     year=year)
-    # for rin in rinc_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=36).value / rin.authorcount
-    #
-    # google_scholar = get_object_or_404(InternationalBase, pk=4)
-    # google_scholar_list = Publication.objects.filter(Q(magazine__ininternational=google_scholar) | Q(digest__ininternational=google_scholar)).filter(
-    #     authors=rating_author).filter(year=year)
-    # for g_s in google_scholar_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=45).value / g_s.authorcount
-    #
-    # periodicals_directory = get_object_or_404(InternationalBase, pk=5)
-    # periodicals_directory_list = Publication.objects.filter(
-    #     Q(magazine__ininternational=periodicals_directory) | Q(digest__ininternational=periodicals_directory)).filter(
-    #     authors=rating_author).filter(year=year)
-    # for p_d in periodicals_directory_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=46).value / p_d.authorcount
-    #
-    # digest_list = Publication.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(conference__isnull=False)
-    #
-    # for digest in digest_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=37).value / digest.authorcount
-    #
-    # thesis_list = Publication.objects.filter(authors=rating_author).filter(year=year).filter(Q(kind_id=10) | Q(kind_id=11))
-    # for thesis in thesis_list:
-    #     rating = rating + RatingEmployee.objects.get(pk=38).value / thesis.authorcount
-    #
-    # comment_list = Publication.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=8)
-    # for comment in comment_list:
-    #     rating = rating + float(comment.sheetcount) * RatingEmployee.objects.get(pk=39).value / comment.authorcount
-    #
-    # methodological_list = Publication.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=6)
-    # for methodological in methodological_list:
-    #     rating = rating + float(methodological.sheetcount) * RatingEmployee.objects.get(pk=40).value / methodological.authorcount
-    #
-    # return rating
-    return 2000
+    rating_author = get_object_or_404(Author, pk=id)
+    rating = 0
+    year = RatingEmployee.objects.get(pk=1).value
+
+    # Раздел 1 Защита диссертации
+
+    if rating_author.candidate_date is not None:
+        if rating_author.candidate_date.year == year:
+            rating = rating + RatingEmployee.objects.get(pk=2).value
+
+    if rating_author.doctor_date is not None:
+        if rating_author.doctor_date.year == year:
+            rating = rating + RatingEmployee.objects.get(pk=3).value
+
+    # Раздел 2 Подготовка кандидата или доктора наук
+
+    disser_list_candidate = DissertationResearch.objects.filter(leader=rating_author).filter(
+        date_protect__year=year)
+
+    rating = rating + RatingEmployee.objects.get(pk=4).value * disser_list_candidate.count()
+
+    disser_list_doctor = DissertationResearch.objects.filter(leader=rating_author).filter(
+        author__isnull=False).filter(author__doctor_date__year=year)
+    rating = rating + RatingEmployee.objects.get(pk=5).value * disser_list_doctor.count()
+
+    # Раздел 7 ПЛД
+
+    pld_list = PLD.objects.filter(authors=rating_author).filter(registration_date__year=year)
+
+    evras_list = pld_list.filter(kind_id=4)
+    for evras in evras_list:
+        rating = rating + RatingEmployee.objects.get(pk=19).value / evras.authors.count()
+
+    rb_list = pld_list.filter(kind_id=2)
+    for rb in rb_list:
+        rating = rating + RatingEmployee.objects.get(pk=20).value / rb.authors.count()
+
+    racional_list = pld_list.filter(kind_id=5)
+    for racional in racional_list:
+        rating = rating + RatingEmployee.objects.get(pk=21).value / racional.authors.count()
+
+    programm_list = pld_list.filter(kind_id=3)
+    for programm in programm_list:
+        rating = rating + RatingEmployee.objects.get(pk=22).value / programm.authors.count()
+
+    demand_list = pld_list.filter(kind_id=6)
+    for demand in demand_list:
+        rating = rating + RatingEmployee.objects.get(pk=23).value / demand.authors.count()
+
+    # Раздел 8 Внедрение результатов научной деятельности
+
+    anr_list = ANR.objects.filter(authors=rating_author).filter(year=year)
+
+    for anr in anr_list:
+        rating = rating + RatingEmployee.objects.get(pk=24).value / anr.authors.count()
+
+    # Раздел 9 Отчет по НИР
+
+    nir_list = NIR.objects.filter(authors=rating_author).filter(approve_date__year=year)
+
+    for nir in nir_list:
+        rating = rating + RatingEmployee.objects.get(pk=27).value / (nir.authors.count() + 1)
+
+    # Раздел 11 Участие в проведении НИР в рамках международных проектов и т.д.
+
+    nir_list_main = NIR.objects.filter(approve_date__isnull=True).filter(Q(start_date__year__lte=year) and Q(end_date__year__gte=year))
+
+    nir_list_leader = nir_list_main.filter(nir_leader=rating_author)
+    rating = rating + nir_list_leader.count() * RatingEmployee.objects.get(pk=41).value
+
+    nir_list_member = nir_list_main.filter(authors=rating_author)
+    rating = rating + nir_list_member.count() * RatingEmployee.objects.get(pk=42).value
+
+    # Раздел 12 Модератор научного форума / руководитель секции
+
+    conference_list_international = Conference.objects.filter(moderators=rating_author).filter(forum_date__year=year).filter(forum_status_id=2)
+    rating = rating + RatingEmployee.objects.get(pk=29).value * conference_list_international.count()
+
+    conference_list_republ = Conference.objects.filter(moderators=rating_author).filter(forum_date__year=year).filter(
+        Q(forum_status_id=1) | Q(forum_status_id=3))
+    rating = rating + RatingEmployee.objects.get(pk=30).value * conference_list_republ.count()
+
+    # Раздел 13 Публикационная активность
+
+    monograph_list = Sciencework.objects.filter(kind_id=1).filter(authors=rating_author).filter(year=year)
+    for monograph in monograph_list:
+        rating = rating + float(monograph.sheetcount) * RatingEmployee.objects.get(pk=31).value / (monograph.other_author_count + monograph.authors.count())
+
+    digest_magazine_list = Sciencework.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
+        conference__isnull=True)
+
+    for d_m in digest_magazine_list:
+        rating = rating + RatingEmployee.objects.get(pk=44).value / (d_m.other_author_count + d_m.authors.count())
+
+    vestnik_list = Sciencework.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
+        magazine_id=1)
+    for vestnik in vestnik_list:
+        rating = rating + RatingEmployee.objects.get(pk=32).value / (vestnik.other_author_count + vestnik.authors.count())
+
+    VAK_list = Sciencework.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
+        Q(magazine__in_vak=True) | Q(digest__in_vak=True))
+    for vak in VAK_list:
+        rating = rating + RatingEmployee.objects.get(pk=33).value / (vak.other_author_count + vak.authors.count())
+
+    scopus = get_object_or_404(InternationalBase, pk=1)
+    scopus_list = Sciencework.objects.filter(Q(magazine__in_international=scopus) | Q(digest__in_international=scopus)).filter(authors=rating_author).filter(
+        year=year)
+    for scop in scopus_list:
+        rating = rating + RatingEmployee.objects.get(pk=34).value / (scop.other_author_count + scop.authors.count())
+
+    web_of_science = get_object_or_404(InternationalBase, pk=3)
+    web_of_science_list = Sciencework.objects.filter(Q(magazine__in_international=web_of_science) |
+                                                     Q(digest__in_international=web_of_science)).filter(
+        authors=rating_author).filter(year=year)
+    for web in web_of_science_list:
+        rating = rating + RatingEmployee.objects.get(pk=35).value / (web.other_author_count + web.authors.count())
+
+    rinc = get_object_or_404(InternationalBase, pk=2)
+    rinc_list = Sciencework.objects.filter(Q(magazine__in_international=rinc) | Q(digest__in_international=rinc)).filter(
+        authors=rating_author).filter(year=year)
+    for rin in rinc_list:
+        rating = rating + RatingEmployee.objects.get(pk=36).value / (rin.other_author_count + rin.authors.count())
+
+    google_scholar = get_object_or_404(InternationalBase, pk=4)
+    google_scholar_list = Sciencework.objects.filter(Q(magazine__in_international=google_scholar) |
+                                                     Q(digest__in_international=google_scholar)).filter(
+        authors=rating_author).filter(year=year)
+    for g_s in google_scholar_list:
+        rating = rating + RatingEmployee.objects.get(pk=45).value / (g_s.other_author_count + g_s.authors.count())
+
+    periodicals_directory = get_object_or_404(InternationalBase, pk=5)
+    periodicals_directory_list = Sciencework.objects.filter(
+        Q(magazine__in_international=periodicals_directory) | Q(digest__in_international=periodicals_directory)).filter(
+        authors=rating_author).filter(year=year)
+    for p_d in periodicals_directory_list:
+        rating = rating + RatingEmployee.objects.get(pk=46).value / (p_d.other_author_count + p_d.authors.count())
+
+    digest_list = Sciencework.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(conference__isnull=False)
+
+    for digest in digest_list:
+        rating = rating + RatingEmployee.objects.get(pk=37).value / (digest.other_author_count + digest.authors.count())
+
+    thesis_list = Sciencework.objects.filter(authors=rating_author).filter(year=year).filter(Q(kind_id=10) | Q(kind_id=11))
+    for thesis in thesis_list:
+        rating = rating + RatingEmployee.objects.get(pk=38).value / (thesis.other_author_count + thesis.authors.count())
+
+    comment_list = Sciencework.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=8)
+    for comment in comment_list:
+        rating = rating + float(comment.sheetcount) * RatingEmployee.objects.get(pk=39).value / (comment.other_author_count + comment.authors.count())
+
+    methodological_list = Sciencework.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=6)
+    for methodological in methodological_list:
+        rating = rating + float(methodological.sheetcount) * RatingEmployee.objects.get(pk=40).value / (methodological.other_author_count + methodological.authors.count())
+
+    return rating
