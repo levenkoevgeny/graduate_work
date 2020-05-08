@@ -47,6 +47,7 @@ $(document).ready(function() {
     'use strict'
 
     $('#id_authors').select2();
+    $('#id_subdivisions').select2();
 
     init_page();
 

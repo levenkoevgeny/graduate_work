@@ -46,17 +46,3 @@ class ScienceWorkFilter(django_filters.FilterSet):
             'grif',
             'interest'
         ]
-
-
-# class Conference_Filter(django_filters.FilterSet):
-#     conferencename = django_filters.CharFilter(lookup_expr='icontains')
-#     forumstatus = django_filters.ModelChoiceFilter(queryset=Statuskonf.objects.all())
-#     kindforum = django_filters.ModelChoiceFilter(queryset=Kindkonf.objects.all())
-#     organizatorforum = django_filters.ModelChoiceFilter(queryset=Organizatorforum.objects.all())
-#     forumdate = django_filters.NumberFilter(field_name='forumdate__year')
-#     forumcountry = django_filters.ModelChoiceFilter(queryset=Cityforforum.objects.all())
-#     moderators = django_filters.ModelChoiceFilter(queryset=Author.objects.all())
-#
-#     class Meta:
-#         model = Conference
-#         fields = '__all__'
