@@ -59,9 +59,9 @@ $(document).ready(function() {
 
     $( "#id_work_is_foreignauthors").on( "click", function() {
         if ($(this).prop("checked")==true){
-            $("#sciencework_foreign_authorscount").prop( "disabled", false);
+            $("#id_other_author_count").prop( "disabled", false);
         } else {
-            $("#sciencework_foreign_authorscount").prop( "disabled", true);
+            $("#id_other_author_count").prop( "disabled", true);
         }
     });
 
