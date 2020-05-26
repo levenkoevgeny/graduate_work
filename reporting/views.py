@@ -301,7 +301,7 @@ def make_rating(id):
 
     monograph_list = Sciencework.objects.filter(kind_id=1).filter(authors=rating_author).filter(year=year)
     for monograph in monograph_list:
-        rating = rating + float(monograph.sheetcount) * RatingEmployee.objects.get(pk=31).value / (monograph.other_author_count + monograph.authors.count())
+        rating = rating + float(monograph.sheet_count) * RatingEmployee.objects.get(pk=31).value / (monograph.other_author_count + monograph.authors.count())
 
     digest_magazine_list = Sciencework.objects.filter(kind_id=9).filter(authors=rating_author).filter(year=year).filter(
         conference__isnull=True)
@@ -363,10 +363,10 @@ def make_rating(id):
 
     comment_list = Sciencework.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=8)
     for comment in comment_list:
-        rating = rating + float(comment.sheetcount) * RatingEmployee.objects.get(pk=39).value / (comment.other_author_count + comment.authors.count())
+        rating = rating + float(comment.sheet_count) * RatingEmployee.objects.get(pk=39).value / (comment.other_author_count + comment.authors.count())
 
     methodological_list = Sciencework.objects.filter(authors=rating_author).filter(year=year).filter(kind_id=6)
     for methodological in methodological_list:
-        rating = rating + float(methodological.sheetcount) * RatingEmployee.objects.get(pk=40).value / (methodological.other_author_count + methodological.authors.count())
+        rating = rating + float(methodological.sheet_count) * RatingEmployee.objects.get(pk=40).value / (methodological.other_author_count + methodological.authors.count())
 
     return rating
